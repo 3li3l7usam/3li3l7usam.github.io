@@ -61,7 +61,7 @@ def contact_band():
             f'<h2 id="contact-h" class="split" aria-label="Let’s create what’s next.">{split("Let’s create what’s next.")}</h2><ul class="contact-list">{"".join(items)}</ul></div></section>'
             f'<footer class="site-foot"><div class="wrap"><span>© 2026 Ali Alhusam</span><span>Senior graphic designer</span><a class="to-top" href="#top">Back to top</a></div></footer>')
 
-LIGHTBOX = ('<dialog class="lb" id="lb" aria-label="Image viewer"><div class="lb-inner"><img src="" alt="">'
+LIGHTBOX = ('<dialog class="lb" id="lb" aria-label="Image viewer"><div class="lb-inner"><img alt="">'
             '<div class="lb-bar"><span class="lb-count"></span><div><button class="prev" type="button">Previous</button>'
             '<button class="next-img" type="button">Next</button><button class="close" type="button">Close</button></div></div></div></dialog>')
 
