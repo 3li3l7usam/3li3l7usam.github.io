@@ -12,7 +12,9 @@ META = json.load(open(os.path.join(OUT, 'assets/img/meta.json')))
 E = lambda s: html.escape(s, quote=True)
 BY = {p['slug']: p for p in PROJECTS}
 CATNAME = dict(CATS)
-FONT = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&amp;display=swap">'
+# Astoria (the brand face) comes from Ali's Adobe Fonts web kit 'svo2ffi' (domains: 3li3l7usam.github.io, localhost);
+# Alegreya Sans from Google Fonts is only the fallback where the kit is not allowed to load
+FONT = '<link rel="preconnect" href="https://use.typekit.net" crossorigin><link rel="stylesheet" href="https://use.typekit.net/svo2ffi.css">' + '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alegreya+Sans:wght@300;400;500;700;800&amp;display=swap">'
 LENIS = 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js'
 # motion is opt-in: scripts add it, reduced-motion users never get it, and it falls away if site.js does not arrive
 BOOT = ("<script>(function(d){if(!matchMedia('(prefers-reduced-motion: reduce)').matches)d.classList.add('motion');"
@@ -97,7 +99,6 @@ def name_markup():
     return ' '.join(out)
 
 def home():
-    flow = ''.join(f'<li>{s}</li>' for s in ('Idea', 'Reference', 'Generate', 'Refine', 'Design'))
     big, small = HERO_IMG
     USED.update(HERO_IMG)
     hero = (f'<section class="hero" aria-label="Introduction"><div class="hero-stage"><div class="hero-dots" aria-hidden="true"></div>'
@@ -107,7 +108,7 @@ def home():
             f'<div class="name-front" aria-hidden="true"><div class="name">{name_markup()}</div></div>'
             f'</div>'
             f'<div class="hero-foot wrap"><p class="lede">Senior graphic designer. <span>Brand identity, campaigns and AI-driven visuals for government entities and leading enterprises, since 2018.</span></p>'
-            f'<ol class="flow" aria-label="How a project moves">{flow}</ol></div></section>')
+            f'</div></section>')
     nodes = ''
     for i, (slug, col, mt, rel, ar) in enumerate(NODES):
         p = BY[slug]

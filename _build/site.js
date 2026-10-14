@@ -62,18 +62,21 @@
     var cur = { tx: 0, ty: 0, px: 0, py: 0 }, aim = { mx: 0, my: 0 };
     var fit = function () {
       var W = stage.clientWidth, H = stage.clientHeight;
+      var stack = getComputedStyle(hero).getPropertyValue('--mode').trim() === 'stack';
       var gutter = parseFloat(getComputedStyle($('.hero-foot', hero)).paddingLeft) || 16;
-      hero.style.setProperty('--name-size', '100px');
-      var stacked = getComputedStyle(lines[0]).display === 'block';
-      var width = stacked ? Math.max.apply(null, lines.map(function (l) { return l.offsetWidth; }))
-                          : lines.reduce(function (s, l) { return s + l.offsetWidth; }, 0) + 16;
-      var size = 100 * (W - gutter * 2) / Math.max(1, width);
-      size = Math.min(size, H * (stacked ? 0.2 : 0.3));
-      hero.style.setProperty('--name-size', size.toFixed(2) + 'px');
       var pw = portrait.offsetWidth, ph = portrait.offsetHeight;
+      var cx = parseFloat(getComputedStyle(portrait).left) || W / 2;      /* portrait centre in px */
+      hero.style.setProperty('--name-size', '100px');
+      var widest = Math.max.apply(null, lines.map(function (l) { return l.offsetWidth; }));
+      /* side by side: the surname ends a third of the way into the portrait, behind the shoulder;
+         stacked (phones, tall screens): the name spans the width across the chest */
+      var target = stack ? W - gutter * 2 : (cx - pw / 2 + pw * 0.34) - gutter;
+      var size = 100 * target / Math.max(1, widest);
+      size = Math.min(size, H * (stack ? 0.2 : 0.3));
+      hero.style.setProperty('--name-size', size.toFixed(2) + 'px');
       hero.style.setProperty('--mw', pw + 'px');
       hero.style.setProperty('--mh', ph + 'px');
-      hero.style.setProperty('--mx0', ((W - pw) / 2).toFixed(1) + 'px');
+      hero.style.setProperty('--mx0', (cx - pw / 2).toFixed(1) + 'px');
       hero.style.setProperty('--my0', (H - ph).toFixed(1) + 'px');
     };
     fit();

@@ -9,7 +9,7 @@
   --mute: #A5A2A3;      /* secondary text */
   --rule: #4E4A4B;      /* hairlines, node borders */
   --lime: #D9F478;      /* brand lime: connections, focus, the contact band */
-  --font: "Alegreya Sans", "Gill Sans", "Optima", "Segoe UI", system-ui, sans-serif;
+  --font: "astoria", "Alegreya Sans", "Gill Sans", "Optima", "Segoe UI", system-ui, sans-serif;
   --step--1: 0.875rem;
   --step-0: 1.1875rem;
   --step-1: 1.5rem;
@@ -66,12 +66,13 @@ p { margin: 0; }
 @media (max-width: 760px) { .nav { display: none; } }
 main.page { padding-top: var(--head-h); }
 
-/* ---------- hero: the name runs behind the portrait; inside the silhouette it continues as an outline */
-.hero { position: relative; overflow: clip; --tx: 0px; --ty: 0px; --px: 0px; --py: 0px; }
-.hero-stage { position: relative; height: 100svh; min-height: 620px; max-height: 1200px;
-  --ph: min(70%, 820px);                       /* portrait height: present, never the largest thing on the page */
-  --name-at: 0.56;                             /* where the name crosses the portrait (upper chest), measured from its top */ }
-.hero-stage::before { content: ""; position: absolute; left: 50%; bottom: 0; width: min(900px, 110vw); aspect-ratio: 1; transform: translate(-50%, 40%);
+/* ---------- hero: the name in two lines on the left, the portrait on the right; the end of the surname
+   slips behind the shoulder and carries on as an outline across the thobe */
+.hero { position: relative; overflow: clip; --mode: side; --tx: 0px; --ty: 0px; --px: 0px; --py: 0px; }
+.hero-stage { position: relative; height: 100svh; min-height: 640px; max-height: 1200px;
+  --ph: min(84%, 980px);                       /* portrait height */
+  --pcx: 71%;                                  /* portrait centre, across the stage */ }
+.hero-stage::before { content: ""; position: absolute; left: var(--pcx); bottom: 0; width: min(900px, 110vw); aspect-ratio: 1; transform: translate(-50%, 40%);
   background: radial-gradient(closest-side, rgba(255, 255, 255, 0.075), transparent); pointer-events: none; }
 .hero-dots { position: absolute; inset: 0; pointer-events: none;
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.28) 1px, transparent 1.3px); background-size: 28px 28px;
@@ -79,44 +80,31 @@ main.page { padding-top: var(--head-h); }
           mask-image: radial-gradient(240px circle at var(--cx, 50%) var(--cy, 30%), #000 0%, transparent 100%);
   opacity: 0; transition: opacity 0.6s; }
 .hero:hover .hero-dots { opacity: 1; }
-.portrait { position: absolute; bottom: 0; left: 50%; height: var(--ph); aspect-ratio: 1099 / 1500; margin: 0;
+.portrait { position: absolute; bottom: 0; left: var(--pcx); height: var(--ph); aspect-ratio: 1099 / 1500; margin: 0;
   transform: translate3d(calc(-50% + var(--px)), var(--py), 0); will-change: transform; }
 .portrait img { width: 100%; height: 100%; object-fit: contain; object-position: bottom;
   -webkit-mask-image: linear-gradient(to bottom, #000 82%, transparent); mask-image: linear-gradient(to bottom, #000 82%, transparent); }
-.name { position: absolute; left: 0; right: 0; top: calc(100% - var(--ph) * (1 - var(--name-at))); margin: 0;
-  font-size: var(--name-size, 14.6vw); line-height: 0.82; font-weight: 800; letter-spacing: -0.025em; text-transform: uppercase; text-align: center; white-space: nowrap;
+.name { position: absolute; left: var(--gutter-l); top: var(--name-y, 48%); margin: 0;
+  font-size: var(--name-size, 13vw); line-height: 0.86; font-weight: 800; letter-spacing: -0.03em; white-space: nowrap;
   transform: translate3d(var(--tx), calc(-50% + var(--ty)), 0); will-change: transform; }
-.name-line { display: inline-block; white-space: nowrap; }
-.name-line + .name-line { margin-left: 0.16em; }
+.name-line { display: block; width: fit-content; white-space: nowrap; }
 .ch { display: inline-block; }
 .name-front { position: absolute; inset: 0; pointer-events: none;
   -webkit-mask-image: url(img/hero/portrait.m.webp); mask-image: url(img/hero/portrait.m.webp); -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
   -webkit-mask-size: var(--mw, 0px) var(--mh, 0px); mask-size: var(--mw, 0px) var(--mh, 0px);
   -webkit-mask-position: calc(var(--mx0, 0px) + var(--px)) calc(var(--my0, 0px) + var(--py)); mask-position: calc(var(--mx0, 0px) + var(--px)) calc(var(--my0, 0px) + var(--py)); }
 .name-front .name { color: transparent; -webkit-text-stroke: 2px var(--ink); }
-.hero-foot { position: absolute; left: 0; right: 0; top: calc(var(--head-h) + clamp(28px, 8vh, 96px)); display: flex; justify-content: space-between; align-items: flex-start; gap: 32px; max-width: none; pointer-events: none; }
+.hero-foot { position: absolute; left: 0; right: 0; bottom: clamp(28px, 6vh, 64px); display: flex; justify-content: space-between; align-items: flex-end; gap: 32px; max-width: none; pointer-events: none; }
 .hero-foot > * { pointer-events: auto; }
-.lede { max-width: 25ch; font-size: var(--step-0); line-height: 1.4; color: var(--paper); }
+.lede { max-width: 30ch; font-size: var(--step-0); line-height: 1.4; color: var(--paper); }
 .lede span { color: var(--mute); }
-.flow { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, auto); gap: 0 18px; position: relative; overflow: hidden; }
-.flow::before { content: ""; position: absolute; left: 5px; right: 5px; top: 5px; height: 1px; background: var(--rule); }
-.flow::after { content: ""; position: absolute; left: 0; top: 5px; height: 1px; width: 30%; background: linear-gradient(90deg, transparent, var(--lime)); animation: flow-run 3.2s var(--ease-in-out) infinite; }
-@keyframes flow-run { from { transform: translateX(-100%); } to { transform: translateX(340%); } }
-.flow li { position: relative; padding-top: 22px; font-size: var(--step--1); color: var(--mute); }
-.flow li::before { content: ""; position: absolute; top: 0; left: 0; width: 11px; height: 11px; background: var(--ink); border: 2px solid var(--lime); z-index: 1; }
-.flow li:first-child::before, .flow li:last-child::before { background: var(--lime); }
-@media (max-width: 1100px) { .flow { display: none; } }
 @media (max-width: 700px), (max-aspect-ratio: 4/5) {
-  .hero-stage { height: 78svh; min-height: 520px; --ph: 74%; }
-  .hero-foot { position: relative; top: auto; padding-top: 28px; padding-bottom: 44px; }
-  .lede { max-width: 34ch; }
-}
-@media (max-width: 700px) {
-  .hero-stage { --name-at: 0.58; }
-  .name { white-space: normal; line-height: 0.86; }
-  .name-line { display: block; width: fit-content; margin-inline: auto; }
-  .name-line + .name-line { margin-left: auto; }
+  .hero { --mode: stack; }
+  .hero-stage { height: 78svh; min-height: 520px; --ph: 74%; --pcx: 50%; }
+  .name { --name-y: calc(100% - var(--ph) * 0.42); }   /* across the upper chest */
   .name-front .name { -webkit-text-stroke-width: 1.5px; }
+  .hero-foot { position: relative; bottom: auto; padding-top: 28px; padding-bottom: 44px; }
+  .lede { max-width: 34ch; }
 }
 
 /* load sequence (only when scripts run and motion is welcome) */
