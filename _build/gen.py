@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Static site generator for Ali Alhusam's portfolio website.
 # usage: python3 gen.py <out_dir> [--preview]
+# v4: a calm home page with no project grid, the work on its own page (work.html), step-by-step boards on project pages.
 import sys, os, json, html, shutil
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from data import *
@@ -43,9 +44,9 @@ def head(title, desc, up=''):
             f'{BOOT}{FONT}<link rel="stylesheet" href="{up}assets/site.css">')
 
 def site_header(up=''):
-    home = up + 'index.html' if up else ''
-    links = [('Work', '#work'), ('Behind the scenes', '#bts'), ('Process', '#process'), ('About', '#about'), ('Contact', '#contact')]
-    nav = ''.join(f'<a href="{home}{h}">{t}</a>' for t, h in links)
+    home = up + 'index.html'
+    links = [('Work', up + 'work.html'), ('Process', home + '#process'), ('About', home + '#about'), ('Contact', '#contact')]
+    nav = ''.join(f'<a href="{h}">{t}</a>' for t, h in links)
     return (f'<div id="top"></div><a class="skip" href="#main">Skip to content</a><header class="site-head"><div class="wrap">'
             f'<a class="brand" href="{up}index.html">Ali Alhusam</a><nav class="nav" aria-label="Sections">{nav}</nav></div>'
             f'<span class="progress" aria-hidden="true"></span></header>')
@@ -60,6 +61,25 @@ def contact_band():
     return (f'<section class="contact" id="contact" aria-labelledby="contact-h"><div class="wrap"><span class="mark" aria-hidden="true"></span>'
             f'<h2 id="contact-h" class="split" aria-label="Let’s create what’s next.">{split("Let’s create what’s next.")}</h2><ul class="contact-list">{"".join(items)}</ul></div></section>'
             f'<footer class="site-foot"><div class="wrap"><span>© 2026 Ali Alhusam</span><span>Senior graphic designer</span><a class="to-top" href="#top">Back to top</a></div></footer>')
+
+def tag(label):
+    return f'<span class="tag">{E(label)}</span>' if label else ''
+
+def steps_board(slug, up=''):
+    # the sketch-to-final stages of one project, each a small board of labelled images
+    cols = ''
+    for i, (name, tools, tiles, cap) in enumerate(STEPS[slug]):
+        figs = ''
+        for rel, label in tiles:
+            w, h = size(rel)
+            span = ' span' if (w / h >= 1.25 or len(tiles) == 1) else ''
+            figs += (f'<figure class="tile{span}"><img src="{thumb(rel, up)}" width="{w}" height="{h}" alt="{E(label or name)}" loading="lazy" data-full="{full(rel, up)}">{tag(label)}</figure>')
+        cols += (f'<li class="rv" style="--d: {i}"><p class="n">Step {i + 1:02d}</p><h3>{E(name)}</h3><p class="tools">{E(tools)}</p>'
+                 f'<div class="tiles{" four" if len(tiles) > 4 else ""}">{figs}</div><p class="cap">{E(cap)}</p></li>')
+    return f'<ol class="board" style="--n: {len(STEPS[slug])}">{cols}</ol>'
+
+def button(label, href, alt=False):
+    return f'<a class="btn{" ghost" if alt else ""}" href="{href}"><span>{E(label)}</span><i aria-hidden="true"></i></a>'
 
 LIGHTBOX = ('<dialog class="lb" id="lb" aria-label="Image viewer"><div class="lb-inner"><img alt="">'
             '<div class="lb-bar"><span class="lb-count"></span><div><button class="prev" type="button">Previous</button>'
@@ -80,71 +100,25 @@ def section_head(id_, title, text, extra=''):
     return (f'<div class="section-head"><h2 id="{id_}" class="split" aria-label="{E(title)}">{split(title)}</h2>'
             f'<div class="rv"><p>{text}</p>{extra}</div></div>')
 
-# ------------------------------------------------------------------ home
-NODES = [('national-day-96', '1 / span 6', '0px', '02_National_Day_96/ND_Screen_Wide_Triple.jpg', '16 / 9'),
-         ('altanfeethi-chauffeur', '8 / span 3', '72px', '01_Altanfeethi_Chauffeur/AC_Rome.jpg', '1 / 1'),
-         ('electricity-friend', '2 / span 4', '24px', '19_Saudi_Energy/SE_Poster_Be_The_Hero.jpg', '3 / 4'),
-         ('saudifood-show-2026', '7 / span 6', '0px', '03_Saudifood_2026/mockups_hd/SF_Final_VIP_Wall.jpg', '16 / 9'),
-         ('campaign-key-visuals', '1 / span 4', '40px', '13_Social_Media/SM_Watan_Story.jpg', '1 / 1'),
-         ('ramadan-1447', '6 / span 3', '0px', '04_Ramadan_1447/RM_Greeting_Minister.jpg', '4 / 5'),
-         ('new-horizons', '9 / span 4', '96px', '12_Presentations/PR_Mockup_Horizons.jpg', '16 / 9')]
-
-def name_markup():
-    out, i = [], 0
-    for word in ('Ali', 'Alhusam'):
-        chars = ''
-        for ch in word:
-            chars += f'<span class="ch" style="--i: {i}">{ch}</span>'; i += 1
-        out.append(f'<span class="name-line">{chars}</span>')
-    return ' '.join(out)
-
+# ------------------------------------------------------------------ home: calm, no project grid
 def home():
     big, small = HERO_IMG
     USED.update(HERO_IMG)
-    hero = (f'<section class="hero" aria-label="Introduction"><div class="hero-stage"><div class="hero-dots" aria-hidden="true"></div>'
-            f'<h1 class="name" aria-label="Ali Alhusam">{name_markup()}</h1>'
-            f'<figure class="portrait"><img src="assets/img/{big}" srcset="assets/img/{small} 630w, assets/img/{big} 1099w" sizes="(max-width: 700px) 100vw, 52vh" '
-            f'width="1099" height="1500" alt="Portrait of Ali Alhusam" fetchpriority="high" draggable="false"></figure>'
-            f'<div class="name-front" aria-hidden="true"><div class="name">{name_markup()}</div></div>'
-            f'</div>'
-            f'<div class="hero-foot wrap"><p class="lede">Senior graphic designer. <span>Brand identity, campaigns and AI-driven visuals for government entities and leading enterprises, since 2018.</span></p>'
-            f'</div></section>')
-    nodes = ''
-    for i, (slug, col, mt, rel, ar) in enumerate(NODES):
-        p = BY[slug]
-        nodes += (f'<a class="node" href="work/{slug}.html" draggable="false" data-cursor="Open" style="--col: {col}; --mt: {mt}; --i: {i}">'
-                  f'<span class="port in" aria-hidden="true"></span><span class="port out" aria-hidden="true"></span>'
-                  f'<span class="node-head"><b>{E(p["title"])}</b><small>{E(p["client"].split(",")[0])}</small></span>'
-                  f'<span class="shot"><img src="{thumb(rel)}" srcset="{thumb(rel)} 760w, {full(rel)} 2000w" sizes="(max-width: 900px) 100vw, 50vw" alt="" style="aspect-ratio: {ar}" loading="lazy" draggable="false"></span></a>')
-    selected = (f'<section class="section wrap" id="selected" aria-labelledby="sel-h">'
-                + section_head('sel-h', 'Selected work', 'Seven projects for MODON, Saudi Energy, the Ministry of Industry and Altanfeethi, linked the way they move on a Magnific Spaces canvas.',
-                               '<p class="hint">Drag the nodes. The wires follow.</p>')
-                + f'<div class="canvas"><svg class="wires" aria-hidden="true"></svg>{nodes}</div></section>')
-    counts = {k: sum(1 for p in PROJECTS if p['cat'] == k) for k, _ in CATS}
-    chips = f'<button class="chip" type="button" data-cat="all" aria-pressed="true">All<span>{len(PROJECTS)}</span></button>' + ''.join(
-        f'<button class="chip" type="button" data-cat="{k}" aria-pressed="false">{E(n)}<span>{counts[k]}</span></button>' for k, n in CATS)
-    cards = ''
-    for i, p in enumerate(PROJECTS):
-        tw, th = tsize(p['cover'])
-        ai = '<span class="ai">AI</span>' if p.get('ai') else ''
-        cards += (f'<a class="card rv{" plate" if p.get("plate") else ""}" href="work/{p["slug"]}.html" data-cat="{p["cat"]}" data-cursor="View" style="--d: {i % 5}">'
-                  f'<span class="shot"><img src="{thumb(p["cover"])}" width="{tw}" height="{th}" alt="" loading="lazy" style="{vt(p["slug"])}"></span>'
-                  f'<span><b>{E(p["title"])}</b>{ai}<small>{E(p["client"])}</small></span></a>')
-    work = (f'<section class="section wrap" id="work" aria-labelledby="work-h">'
-            + section_head('work-h', 'All work', 'Campaigns, event themes, presentations and social content, plus earlier identity, editorial and packaging work.')
-            + f'<div class="filters rv" role="group" aria-label="Filter projects">{chips}</div><div class="grid">{cards}</div></section>')
-    figs = ''
-    for i, (key, slug) in enumerate((('ND', 'national-day-96'), ('SE', 'electricity-friend'), ('SF', 'saudifood-show-2026'))):
-        b = BTS[key]; p = BY[slug]
-        figs += (f'<figure class="rv" style="--d: {i}">{window(b["img"], b["window"], alt="Magnific Spaces canvas for " + p["title"])}'
-                 f'<figcaption><span>{E(b["title"])}. {E(b["steps"][1][1])}</span><a href="work/{slug}.html">See {E(p["title"])}</a></figcaption></figure>')
-    bts = (f'<section class="section wrap" id="bts" aria-labelledby="bts-h">'
-           + section_head('bts-h', 'Behind the scenes', 'The real canvases: references, generations and finished designs side by side, the way each campaign was built in Magnific Spaces.')
-           + f'<div class="bts-grid">{figs}</div></section>')
+    intro = (f'<section class="intro wrap" aria-label="Introduction"><div class="intro-text">'
+             f'<p class="eyebrow rv">Senior graphic designer  ·  since 2018</p>'
+             f'<h1 class="split" aria-label="Ali Alhusam">{split("Ali Alhusam")}</h1>'
+             f'<p class="lede rv" style="--d: 3">Brand identity, campaigns, exhibition booths and AI-driven visuals for government entities and leading enterprises. Every project starts as a sketch.</p>'
+             f'<div class="actions rv" style="--d: 4">{button("View the work", "work.html")}{button("Get in touch", "#contact", True)}</div></div>'
+             f'<figure class="intro-portrait rv-img"><img src="assets/img/{big}" srcset="assets/img/{small} 630w, assets/img/{big} 1099w" sizes="(max-width: 760px) 80vw, 34vw" '
+             f'width="1099" height="1500" alt="Portrait of Ali Alhusam" fetchpriority="high"></figure></section>')
+    slug, tiles = FLOW
+    strip = ''.join(f'<figure class="rv" style="--d: {i}"><span class="shot"><img src="{thumb(rel)}" alt="{E(label)}" loading="lazy" data-full="{full(rel)}"></span>'
+                    f'<figcaption><b>{i + 1:02d}</b>{E(label)}</figcaption></figure>' for i, (rel, label) in enumerate(tiles))
     steps = ''.join(f'<li class="rv" style="--d: {i + 2}"><h3>{E(t)}</h3><p class="tools">{E(tools)}</p><p>{E(d)}</p></li>' for i, (t, tools, d) in enumerate(PROCESS))
     kit = ''.join(f'<div class="rv" style="--d: {i}"><dt>{E(stage)}</dt><dd><b>{E(tools)}</b><span>{E(d)}</span></dd></div>' for i, (stage, tools, d) in enumerate(TOOLKIT))
     process = (f'<section class="section wrap" id="process" aria-labelledby="proc-h">'
-               + section_head('proc-h', 'How I work with AI', 'Five steps and one rule: AI speeds up the making, never the thinking. Every image is directed, chosen and finished by hand.')
+               + section_head('proc-h', 'From sketch to final', 'A rough sketch first, then references, AI scenes or a 3D model, and a finished design. Every image is directed, chosen and finished by hand.')
+               + f'<div class="flow">{strip}</div><p class="flow-note rv">The {E(BY[slug]["title"])}, from a notebook sketch to the final render. <a class="link" href="work/{slug}.html">See the project</a></p>'
                + f'<ol class="steps">{steps}</ol><dl class="toolkit" aria-label="Toolkit by stage">{kit}</dl></section>')
     def logo(n, hidden=False):
         w, h = size('00_Clients/' + n + '.png')
@@ -154,28 +128,47 @@ def home():
             f'<div class="marquee-set" aria-hidden="true">{"".join(logo(n, True) for n in CLIENT_LOGOS)}</div>')
     about = (f'<section class="section wrap" id="about" aria-labelledby="about-h">'
              f'<div class="section-head"><h2 id="about-h" class="split" aria-label="About">{split("About")}</h2><p></p></div>'
-             f'<div class="about"><p class="bio rv">I design identities, campaigns and presentations for government entities and leading enterprises in Saudi Arabia. '
-             f'I bring AI into every stage of the work, from the first idea to the final file, so campaign visuals arrive faster without losing control of the brand.</p>'
+             f'<div class="about"><p class="bio rv">I design identities, campaigns, presentations and exhibition booths for government entities and leading enterprises in Saudi Arabia. '
+             f'Each idea starts on paper; AI and 3D then help the visuals arrive faster without losing control of the brand.</p>'
              f'<p class="since rv" style="--d: 2">Designing since<b>2018</b></p></div>'
              f'<div class="marquee rv" aria-label="Selected clients"><div class="marquee-track">{sets}</div></div></section>')
-    filled = [f for f in FEEDBACK if f['quote'].strip()]
-    fb = ''
-    if filled or PREVIEW:
-        items = filled or FEEDBACK
-        figs = ''
-        for i, f in enumerate(items):
-            ph = not f['quote'].strip()
-            q = f['quote'] or 'Client quote goes here: one or two sentences on the result and on working together.'
-            who = f['name'] or 'Name'
-            role = f['role'] or 'Title, organisation'
-            figs += (f'<figure class="rv {"placeholder" if ph else ""}" style="--d: {i}"><blockquote>{E(q)}</blockquote>'
-                     f'<figcaption><b>{E(who)}</b>{E(role)}, {E(f["project"])}</figcaption></figure>')
-        note = 'Placeholders for now. This section stays hidden on the live site until the quotes are in.' if not filled else ''
-        fb = (f'<section class="section wrap" id="feedback" aria-labelledby="fb-h">' + section_head('fb-h', 'In their words', note)
-              + f'<div class="quotes">{figs}</div></section>')
-    body = site_header() + f'<main id="main">{hero}{selected}{work}{bts}{process}{about}{fb}</main>' + contact_band() + LIGHTBOX + '<div class="cursor" aria-hidden="true"><span></span></div>'
-    desc = 'Portfolio of Ali Alhusam, senior graphic designer: campaigns, event themes, presentations and AI-driven visuals for MODON, Saudi Energy, the Ministry of Industry and Altanfeethi.'
+    n = len(PROJECTS)
+    cta = (f'<section class="cta wrap" aria-labelledby="cta-h"><h2 id="cta-h" class="split" aria-label="See the work.">{split("See the work.")}</h2>'
+           f'<p class="rv">{n} projects: campaigns, event themes, exhibition booths, presentations and social content, each with its brief and, where it applies, the steps from sketch to final.</p>'
+           f'<div class="rv" style="--d: 2">{button("Open the work page", "work.html")}</div></section>')
+    body = site_header() + f'<main id="main">{intro}{cta}{process}{about}</main>' + contact_band() + LIGHTBOX
+    desc = 'Portfolio of Ali Alhusam, senior graphic designer: campaigns, event themes, exhibition booths, presentations and AI-driven visuals for MODON, Saudi Energy, the Ministry of Industry and Altanfeethi.'
     return doc('Ali Alhusam', desc, body, cls='home'), doc('Ali Alhusam', desc, body, preview_page=True, cls='home')
+
+# ------------------------------------------------------------------ work page
+def work_page():
+    counts = {k: sum(1 for p in PROJECTS if p['cat'] == k) for k, _ in CATS}
+    chips = f'<button class="chip" type="button" data-cat="all" aria-pressed="true">All<span>{len(PROJECTS)}</span></button>' + ''.join(
+        f'<button class="chip" type="button" data-cat="{k}" aria-pressed="false">{E(n)}<span>{counts[k]}</span></button>' for k, n in CATS)
+    cards = ''
+    for i, p in enumerate(PROJECTS):
+        tw, th = tsize(p['cover'])
+        ai = '<span class="ai">AI</span>' if p.get('ai') else ''
+        st = '<span class="ai st">Steps</span>' if p['slug'] in STEPS else ''
+        cards += (f'<a class="card rv{" plate" if p.get("plate") else ""}" href="work/{p["slug"]}.html" data-cat="{p["cat"]}" data-cursor="View" style="--d: {i % 5}">'
+                  f'<span class="shot"><img src="{thumb(p["cover"])}" width="{tw}" height="{th}" alt="" loading="lazy" style="{vt(p["slug"])}"></span>'
+                  f'<span><b>{E(p["title"])}</b>{ai}{st}<small>{E(p["client"])}</small></span></a>')
+    head_ = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="index.html">Home</a> / Work</nav>'
+             f'<header class="p-head"><h1 class="split" aria-label="Work">{split("Work")}</h1>'
+             f'<p class="sub rv" style="--d: 3">Campaigns, event themes, exhibition booths, presentations and social content, plus earlier identity, editorial and packaging work. '
+             f'Projects marked Steps show the way from the first sketch to the final file.</p></header></div>')
+    grid = (f'<section class="wrap work-index" aria-label="All projects"><div class="filters rv" role="group" aria-label="Filter projects">{chips}</div>'
+            f'<div class="grid">{cards}</div></section>')
+    figs = ''
+    for i, (key, slug) in enumerate((('ND', 'national-day-96'), ('SE', 'electricity-friend'), ('SF', 'saudifood-show-2026'))):
+        b = BTS[key]; p = BY[slug]
+        figs += (f'<figure class="rv" style="--d: {i}">{window(b["img"], b["window"], alt="Magnific Spaces canvas for " + p["title"])}'
+                 f'<figcaption><span>{E(b["title"])}. {E(b["steps"][1][1])}</span><a href="work/{slug}.html">See {E(p["title"])}</a></figcaption></figure>')
+    bts = (f'<section class="section wrap" id="bts" aria-labelledby="bts-h">'
+           + section_head('bts-h', 'Behind the scenes', 'The real canvases: references, generations and finished designs side by side, the way each campaign was built in Magnific Spaces.')
+           + f'<div class="bts-grid">{figs}</div></section>')
+    body = site_header() + f'<main id="main" class="page">{head_}{grid}{bts}</main>{LIGHTBOX}' + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>'
+    return doc('Work · Ali Alhusam', 'All projects by Ali Alhusam: campaigns, event themes, exhibition booths, presentations and social content.', body, cls='workpage')
 
 # ------------------------------------------------------------------ project pages
 def rows(images, plate=lambda rel: False, target=3.3):
@@ -193,7 +186,7 @@ def rows(images, plate=lambda rel: False, target=3.3):
 def project(i):
     p = PROJECTS[i]; up = '../'
     facts = ''.join(f'<div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>' for k, v in p['facts'])
-    top = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="../index.html#work">All work</a> / {E(CATNAME[p["cat"]])}</nav>'
+    top = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="../work.html">Work</a> / {E(CATNAME[p["cat"]])}</nav>'
            f'<header class="p-head"><h1 class="split" aria-label="{E(p["title"])}">{split(p["title"])}</h1><p class="sub rv" style="--d: 3">{E(p["sub"])}</p></header>'
            f'<div class="p-intro"><p class="summary rv" style="--d: 4">{E(p["summary"])}</p><dl class="facts rv" style="--d: 5">{facts}</dl></div>')
     named = False
@@ -208,6 +201,10 @@ def project(i):
         brief = (f'<section class="brief" aria-labelledby="brief-h"><h2 id="brief-h" class="split" aria-label="{E(hd)}">{split(hd)}</h2><dl>'
                  f'<div class="rv" style="--d: 1"><dt>The objective</dt><dd>{E(obj)}</dd></div><div class="rv" style="--d: 2"><dt>The idea</dt><dd>{E(idea)}</dd></div>'
                  f'<div class="rv" style="--d: 3"><dt>Visual direction</dt><dd>{E(vd)}</dd></div></dl></section>')
+    board = ''
+    if p['slug'] in STEPS:
+        board = (f'<section class="p-steps" aria-labelledby="steps-h"><div class="section-head"><h2 id="steps-h" class="split" aria-label="Step by step">{split("Step by step")}</h2>'
+                 f'<div class="rv"><p>From the first sketch to the final file.</p></div></div>{steps_board(p["slug"], up)}</section>')
     gal = ''
     n = 0
     for items, s in rows([r for r in p['images'] if r != p.get('hero')], lambda rel: is_plate(p, rel)):
@@ -234,7 +231,7 @@ def project(i):
     nxt = PROJECTS[(i + 1) % len(PROJECTS)]
     nav = (f'<a class="next" href="{nxt["slug"]}.html" data-cursor="Next"><small><span>Next project</span><span>{(i + 2 - 1) % len(PROJECTS) + 1:02d} / {len(PROJECTS)}</span></small>'
            f'<b>{E(nxt["title"])}</b><img class="peek" src="{thumb(nxt["cover"], up)}" alt="" loading="lazy"></a></div>')
-    body = site_header(up) + f'<main id="main" class="page">{top}{brief}{gallery}{bts}{nav}</main>{LIGHTBOX}' + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>'
+    body = site_header(up) + f'<main id="main" class="page">{top}{brief}{board}{gallery}{bts}{nav}</main>{LIGHTBOX}' + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>'
     return doc(f'{p["title"]} · Ali Alhusam', p['summary'], body, up, cls='project')
 
 # ------------------------------------------------------------------ write
@@ -242,10 +239,11 @@ os.makedirs(os.path.join(OUT, 'work'), exist_ok=True)
 idx, idx_prev = home()
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(idx)
 if PREVIEW: open(os.path.join(OUT, '_preview_page.html'), 'w', encoding='utf-8').write(idx_prev)
+open(os.path.join(OUT, 'work.html'), 'w', encoding='utf-8').write(work_page())
 for i, p in enumerate(PROJECTS):
     open(os.path.join(OUT, 'work', p['slug'] + '.html'), 'w', encoding='utf-8').write(project(i))
 shutil.copy(os.path.join(SRC, 'site.css'), os.path.join(OUT, 'assets/site.css'))
 shutil.copy(os.path.join(SRC, 'site.js'), os.path.join(OUT, 'assets/site.js'))
 json.dump(sorted(USED), open(os.path.join(OUT, '_used.json'), 'w'), indent=0)
 missing = [u for u in USED if not os.path.exists(os.path.join(OUT, 'assets/img', u))]
-print('pages', 1 + len(PROJECTS), 'images used', len(USED), 'missing', missing)
+print('pages', 2 + len(PROJECTS), 'images used', len(USED), 'missing', missing)

@@ -352,3 +352,75 @@ main.page { padding-top: var(--head-h); }
   .marquee-set { flex-wrap: wrap; justify-content: center; row-gap: 32px; }
   .marquee-set[aria-hidden="true"] { display: none; }
 }
+
+/* ======================================================================== v4
+   A calmer home: no project grid and no oversized name over the portrait. The work lives on its own page,
+   and project pages show the way from the first sketch to the final file. */
+
+/* ---------- buttons */
+.btn { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; background: var(--lime); color: var(--ink); font-weight: 700; font-size: 1.0625rem;
+  padding: 14px 24px; border-radius: 999px; border: 1px solid var(--lime); transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+.btn i { position: relative; width: 18px; height: 2px; background: currentColor; transition: width 0.45s var(--ease); }
+.btn i::after { content: ""; position: absolute; right: 0; top: -4px; width: 8px; height: 8px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; transform: rotate(45deg); }
+.btn:hover i { width: 30px; }
+.btn.ghost { background: transparent; color: var(--paper); border-color: var(--rule); }
+.btn.ghost:hover { border-color: var(--paper); }
+
+/* ---------- intro */
+.home main { padding-top: var(--head-h); }
+.intro { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 32px clamp(32px, 6vw, 96px); align-items: end; min-height: min(calc(100svh - var(--head-h)), 900px); }
+.intro-text { padding-block: clamp(40px, 8vh, 96px); }
+.eyebrow { display: flex; align-items: center; gap: 10px; color: var(--mute); font-size: var(--step--1); letter-spacing: 0.12em; text-transform: uppercase; }
+.eyebrow::before { content: ""; width: 8px; height: 8px; background: var(--lime); flex: none; }
+.intro h1 { font-size: clamp(3.25rem, 8vw, 7.5rem); letter-spacing: -0.035em; line-height: 0.92; margin-top: 22px; max-width: 8ch; }
+.intro .lede { max-width: 42ch; margin-top: 28px; color: var(--mute); font-size: var(--step-1); line-height: 1.4; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
+.intro-portrait { margin: 0; justify-self: end; width: min(100%, 500px); }
+.intro-portrait img { width: 100%; -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent); mask-image: linear-gradient(to bottom, #000 80%, transparent); }
+@media (max-width: 760px) {
+  .intro { grid-template-columns: 1fr; min-height: 0; }
+  .intro-portrait { justify-self: center; width: min(78%, 360px); }
+}
+
+/* ---------- the way to the work page */
+.cta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 48px; align-items: end; padding-block: clamp(64px, 9vw, 136px); border-top: 1px solid var(--rule); }
+.cta h2 { font-size: var(--step-3); letter-spacing: -0.025em; grid-row: span 2; }
+.cta p { color: var(--mute); max-width: 52ch; }
+@media (max-width: 760px) { .cta { grid-template-columns: 1fr; } .cta h2 { grid-row: auto; } }
+
+/* ---------- sketch to render strip */
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 24px); }
+.flow figure { margin: 0; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.flow .shot { overflow: hidden; border-radius: 6px; background: var(--ink-2); }
+.flow img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; cursor: zoom-in; transition: transform 1.2s var(--ease); }
+.flow figure:hover img { transform: scale(1.04); }
+.flow figcaption { display: flex; gap: 10px; align-items: baseline; color: var(--paper); font-weight: 500; }
+.flow figcaption b { color: var(--lime); font-weight: 500; font-size: var(--step--1); }
+.flow-note { color: var(--mute); margin: 18px 0 clamp(56px, 7vw, 104px); }
+@media (max-width: 760px) { .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+/* ---------- work page */
+.work-index { padding-bottom: clamp(64px, 9vw, 136px); }
+.ai.st { color: var(--mute); }
+.ai.st::before { background: transparent; border: 2px solid var(--lime); width: 6px; height: 6px; }
+
+/* ---------- step-by-step boards on project pages */
+.p-steps { padding-block: clamp(48px, 7vw, 104px); border-top: 1px solid var(--rule); }
+.board { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: clamp(24px, 2.4vw, 40px); }
+.board li { border-top: 2px solid var(--lime); padding-top: 18px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+.board .n { color: var(--lime); font-size: var(--step--1); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; }
+.board h3 { font-size: var(--step-1); }
+.board .tools { color: var(--mute); font-size: var(--step--1); }
+.tiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; align-items: start; }
+.tiles.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.tile { margin: 0; position: relative; overflow: hidden; border-radius: 4px; background: var(--ink-2); }
+.tile.span { grid-column: 1 / -1; }
+.tile img { width: 100%; cursor: zoom-in; transition: transform 1.2s var(--ease); }
+.tile:hover img { transform: scale(1.03); }
+.tag { position: absolute; left: 10px; bottom: 10px; background: var(--lime); color: var(--ink); font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; padding: 5px 10px; pointer-events: none; }
+.board .cap { color: var(--mute); font-size: 1rem; margin-top: 12px; }
+@media (max-width: 1100px) { .board { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .board { grid-template-columns: 1fr; } }
+
+/* ---------- a quieter contact band */
+.contact h2 { font-size: clamp(2.75rem, 7vw, 6.5rem); }

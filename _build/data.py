@@ -238,3 +238,96 @@ FEEDBACK = [  # fill these in; the section stays hidden on the live site while a
 ]
 
 CONTACT = dict(email='3li.3l7osam@gmail.com', phone='+966 53 607 0382', behance='https://www.behance.net/3li3l7usam', linkedin='')
+
+# ======================================================================== v4: booths, step-by-step boards, sketch-first process
+CATS = [('campaigns', 'Campaigns & events'), ('booths', 'Exhibition booths'), ('presentations', 'Presentations'),
+        ('social', 'Social media'), ('earlier', 'Earlier work')]
+
+BRIEFS['QR'] = ('A stand you can smell from the aisle.',
+                'Give a heritage food brand a stand that draws visitors in and keeps them seated.',
+                'A live grill counter at the front, a red lounge behind it and a castle-edge wall that reads from across the hall.',
+                'Brand red and warm white, a hanging header sign, and the logo repeated at every eye level.')
+BRIEFS['AJ'] = ('Gateway of the Guests of God.',
+                'Present a pilgrim transport company at the Hajj exhibition on a tight 51 m² corner plot.',
+                'A 4 m corner tower as the landmark, pointed arches for the Hajj journey, and three glowing Tawaf rings over the majlis.',
+                'Beige travertine, walnut slats, brass and warm 3000K light: calm, hospitable and premium.')
+
+BT = '22_Booths/'
+PROJECTS[4:4] = [
+ dict(slug='alojour-booth', cat='booths', title='Alojour booth', sub='Gateway of the Guests of God.', client='Alojour for transporting pilgrims', brief='AJ', feat=True,
+      summary='An exhibition booth for a pilgrim transport company at the Hajj exhibition: a 51 m² L-shaped corner stand with a walnut tower, pointed arches, a majlis under three hanging Tawaf rings, a reception counter and a hospitality bar.',
+      facts=[('Client', 'Alojour for transporting pilgrims'), ('Role', 'Concept, 3D design and rendering'), ('Scope', 'Booth design, renders, plan with dimensions'), ('Tools', 'Blender, Cycles, ChatGPT')],
+      hero=BT + 'renders/AJ_CAM_01_Hero_Front.jpg', cover=BT + 'renders/AJ_CAM_02_Frontal_Diagonal.jpg',
+      images=[BT + 'renders/AJ_%s.jpg' % n for n in ('CAM_02_Frontal_Diagonal', 'CAM_16_Low_Angle_Hero', 'CAM_03_Left_Wing_Reception', 'CAM_04_Right_Wing_Cafe',
+              'CAM_07_Majlis_Interior', 'CAM_14_Tawaf_Rings', 'CAM_12_Tower_Logo_Halo', 'CAM_08_Bar_Cafe', 'CAM_17_Bar_Shelves', 'CAM_06_Reception_Close',
+              'CAM_05_Aerial', 'CAM_10_TopPlan_Dimensions')]),
+ dict(slug='alqaryah-booth', cat='booths', title='Al-Qaryah booth', sub='A stand built around a live grill.', client='Al-Qaryah', brief='QR', feat=True,
+      summary='An exhibition booth for a heritage food brand: a red-and-white stand with a castle-edge back wall, a hanging header sign, a live grill counter, a lounge and a bar.',
+      facts=[('Client', 'Al-Qaryah'), ('Role', 'Concept, 3D design and rendering'), ('Scope', 'Booth design, renders, plan'), ('Tools', 'Blender, Cycles, ChatGPT')],
+      hero=BT + 'renders/QR_01_hero_left.jpg', cover=BT + 'renders/QR_02_front.jpg',
+      images=[BT + 'renders/QR_%s.jpg' % n for n in ('02_front', '03_hero_right', '04_interior', '05_grill', '06_left_side', '07_plan')]),
+]
+
+ST, MI = '21_Process/', '03_Saudifood_2026/mockups/_magnific_in/'
+def _booth(k, plan, plan_lab, caps, second=('_front_1_outline.jpg', 'Front')):
+    return [('Sketch and plan', 'Pen and paper', [(BT + k + '_0_sketch.jpg', 'Concept sketch'), (BT + k + plan, plan_lab)], caps[0]),
+            ('Outline', 'Blender', [(BT + k + '_1_outline.jpg', 'Outline'), (BT + k + second[0], second[1])], caps[1]),
+            ('Place the models', 'Blender', [(BT + k + '_2_models.jpg', 'Models placed'), (BT + k + '_int_2_models.jpg', 'Interior')], caps[2]),
+            ('Render', 'Blender, Cycles', [(BT + k + '_3_render.jpg', 'Final render'), (BT + k + '_int_3_render.jpg', 'Interior')], caps[3])]
+
+# step-by-step boards shown on each project page: (step, tools, [(image, label)], caption)
+STEPS = {
+ 'national-day-96': [
+    ('Sketch and references', 'Pen and paper, Magnific Spaces', [(ST + 'ND_Sketch.jpg', 'Concept sketch'), (ST + 'ND_Ref_Board.jpg', 'Reference board'), (ST + 'ND_Ref_Pattern.jpg', 'Sadu and wordmark')],
+     'The idea drawn first: one figure, one long street, the sun at its end. Locations, light and Sadu patterns gathered as one board.'),
+    ('Generate and branch', 'Magnific Spaces, Nano Banana Pro', [(ST + 'ND_Gen_Craft.jpg', 'Handicraft'), (ST + 'ND_Gen_Robotics.jpg', 'Robotics')],
+     'Each scene generated in variations and compared side by side until the light and palette matched across the series.'),
+    ('Compose and roll out', 'Photoshop, Illustrator', [(ND + 'ND_Izzuna_01.jpg', 'Final poster'), (ND + 'ND_Screen_Road.jpg', 'City screen'), (ND + 'ND_Screen_Landmark.jpg', 'Landmark screen')],
+     'Chosen frames upscaled and retouched, then set with the campaign wordmark and rolled out to screens and greetings.')],
+ 'altanfeethi-chauffeur': [
+    ('Sketch the layout', 'Pen and paper', [(ST + 'AC_Sketch.jpg', 'Concept sketch')],
+     'Car and road at the base, the message panel above them, the city filling the sky: the grid every post follows.'),
+    ('Generate the cities', 'Magnific, Nano Banana Pro', [(ST + 'AC_Gen_Rome.jpg', 'Rome'), (ST + 'AC_Gen_Vienna.jpg', 'Vienna'), (ST + 'AC_Gen_Amman.jpg', 'Amman'), (ST + 'AC_Gen_New-York.jpg', 'New York')],
+     'Each skyline generated at the same golden hour and eye level, so it drops into the frame without retouching.'),
+    ('Place and finish', 'Photoshop', [(AC + 'AC_Abu-Dhabi.jpg', 'Final post')],
+     'The car, road and Arabic headline composited over the city, with the brand mark kept in one fixed position.')],
+ 'electricity-friend': [
+    ('Sketch and brief', 'Pen and paper, Claude, ChatGPT', [(ST + 'EF_Sketch.jpg', 'Concept sketch'), (ST + 'EF_Ref_Brief.jpg', 'Brief to prompts')],
+     'One idea sketched first: a cape of light and a safe distance from the cabinet. The brief then written as prompts.'),
+    ('Generate the scenes', 'Magnific Spaces, Nano Banana Pro', [(ST + 'EF_Gen_Night.jpg', 'Night street'), (ST + 'EF_Gen_Cape.jpg', 'Cape of light')],
+     'Blue-hour scenes generated one per everyday moment, keeping the same light, wardrobe and glowing cape.'),
+    ('Type and call to action', 'Photoshop', [(SE + 'SE_Poster_Dont_Ignore.jpg', 'Poster'), (SE + 'SE_Poster_True_Eye.jpg', 'Poster')],
+     'Selected scenes upscaled, then the headline, the orange safe-distance line and the app call to action set in Photoshop.')],
+ 'saudifood-show-2026': [
+    ('Sketch the site', 'Pen and paper, site photos', [(ST + 'SF_Sketch.jpg', 'Concept sketch'), (MI + 'bg_flags.png', 'Empty site')],
+     'A row of flags in front of the pavilion sketched over the real entrance, with the empty site as the base plate.'),
+    ('Design flat', 'Illustrator, Photoshop', [(MI + 'design_flag_%d.jpg' % i, '') for i in range(1, 5)] + [(MI + 'design_fence.jpg', 'Flags and fence')],
+     'Flags, fences and gates designed flat in one green family, with the Arabic and English messages paired on every piece.'),
+    ('Place and render', 'Photoshop, Magnific Spaces', [(SFH + 'SF_HD_Flags.jpg', 'Placement'), (SFH + 'SF_Final_Flags.jpg', 'Final render')],
+     'The artwork placed on the site photo, then re-lit in Magnific so light, shadow and fabric read as one photograph.')],
+ 'alqaryah-booth': _booth('QR', '_0_hallplan.jpg', 'Hall plan',
+    ['The layout drawn first on paper, then checked against the hall plan and the stand size.',
+     'Platform, walls and the hanging header blocked out in Blender to true size.',
+     'Lounge chairs, grill counter, bar, kiosk and plants placed to test seating and flow.',
+     'Brand red, graphics and lighting added, then rendered in Cycles for approval.']),
+ 'alojour-booth': _booth('AJ', '_0_siteplan.jpg', 'Site plan',
+    ['An L-shaped stand sketched over the two plots, with the corner kept for a landmark tower.',
+     'Walls, arches and the 4 m tower blocked out in Blender to the real plot dimensions.',
+     'Reception, majlis, hospitality bar, cafe tables and the hanging rings placed.',
+     'Travertine, walnut, brass and warm 3000K light, rendered in Cycles for approval.'],
+    second=('_int_1_outline.jpg', 'Interior')),
+}
+
+TOOLKIT = [('Ideas and concept', 'Pen and paper, Claude, ChatGPT', 'A rough sketch first, then the brief analysed and the idea, copy direction and prompts built.'),
+           ('Image', 'Magnific, Photoshop', 'Scenes generated in Magnific Spaces with Nano Banana Pro, upscaled, then retouched and composited in Photoshop.'),
+           ('3D and video', 'Blender, Higgsfield, Flow', 'Exhibition booths modelled and rendered in Blender; key frames turned into motion.'),
+           ('Design and delivery', 'Adobe Creative Cloud', 'Illustrator, InDesign, Photoshop, After Effects and Premiere Pro for identity, layout, motion and final files.')]
+
+PROCESS = [('Sketch', 'Pen and paper', 'Every project starts as a rough sketch: the composition and the message before any tool.'),
+           ('Reference', 'Magnific Spaces', 'Location, light, people and cultural detail gathered as one board.'),
+           ('Generate or model', 'Magnific, Nano Banana Pro, Blender', 'Scenes directed side by side on one canvas; booths built in Blender from outline to placed models.'),
+           ('Refine', 'Photoshop, Higgsfield, Flow', 'Upscaling, retouching and compositing, then key frames turned into motion.'),
+           ('Design and render', 'Adobe Creative Cloud, Blender', 'Typography, layout and final renders for every format and screen.')]
+
+# the method strip on the home page: one booth, sketch to render
+FLOW = ('alojour-booth', [(BT + 'AJ_0_sketch.jpg', 'Sketch'), (BT + 'AJ_1_outline.jpg', 'Outline'), (BT + 'AJ_2_models.jpg', 'Models'), (BT + 'AJ_3_render.jpg', 'Render')])

@@ -2,7 +2,8 @@
 
 Static site served by GitHub Pages at https://3li3l7usam.github.io/
 
-- `index.html` — home: selected work, all work, behind the scenes, process and AI toolkit, about, contact
+- `index.html` — home: intro, a link to the work, the sketch-to-final process, about, contact
+- `work.html` — all projects with filters, and the behind-the-scenes canvases
 - `work/` — one page per project
 - `assets/` — stylesheet, script and images (WebP)
 - `_build/` — the generator and its content. Edit `_build/data.py` (projects, feedback quotes, contact) and run
