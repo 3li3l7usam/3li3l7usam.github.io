@@ -377,10 +377,10 @@ main.page { padding-top: var(--head-h); }
 .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 36px; }
 .intro-portrait { margin: 0; justify-self: end; width: min(100%, 500px); }
 .intro-portrait img { width: 100%; -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent); mask-image: linear-gradient(to bottom, #000 80%, transparent); }
-@media (max-width: 760px) {
-  .intro { grid-template-columns: 1fr; min-height: 0; }
-  .intro-portrait { justify-self: center; width: min(78%, 360px); }
-}
+/* no portrait: the intro is type only */
+.intro { grid-template-columns: minmax(0, 1fr); min-height: min(calc(78svh - var(--head-h)), 760px); align-items: center; }
+.intro h1 { max-width: none; }
+@media (max-width: 760px) { .intro { min-height: 0; } }
 
 /* ---------- the way to the work page */
 .cta { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 20px 48px; align-items: end; padding-block: clamp(64px, 9vw, 136px); border-top: 1px solid var(--rule); }
@@ -400,7 +400,7 @@ main.page { padding-top: var(--head-h); }
 @media (max-width: 760px) { .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 
 /* ---------- work page */
-.work-index { padding-bottom: clamp(64px, 9vw, 136px); }
+.workpage .p-head { padding-bottom: clamp(16px, 2vw, 32px); }
 .ai.st { color: var(--mute); }
 .ai.st::before { background: transparent; border: 2px solid var(--lime); width: 6px; height: 6px; }
 

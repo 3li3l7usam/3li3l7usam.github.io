@@ -102,15 +102,11 @@ def section_head(id_, title, text, extra=''):
 
 # ------------------------------------------------------------------ home: calm, no project grid
 def home():
-    big, small = HERO_IMG
-    USED.update(HERO_IMG)
     intro = (f'<section class="intro wrap" aria-label="Introduction"><div class="intro-text">'
              f'<p class="eyebrow rv">Senior graphic designer  ·  since 2018</p>'
              f'<h1 class="split" aria-label="Ali Alhusam">{split("Ali Alhusam")}</h1>'
              f'<p class="lede rv" style="--d: 3">Brand identity, campaigns, exhibition booths and AI-driven visuals for government entities and leading enterprises. Every project starts as a sketch.</p>'
-             f'<div class="actions rv" style="--d: 4">{button("View the work", "work.html")}{button("Get in touch", "#contact", True)}</div></div>'
-             f'<figure class="intro-portrait rv-img"><img src="assets/img/{big}" srcset="assets/img/{small} 630w, assets/img/{big} 1099w" sizes="(max-width: 760px) 80vw, 34vw" '
-             f'width="1099" height="1500" alt="Portrait of Ali Alhusam" fetchpriority="high"></figure></section>')
+             f'<div class="actions rv" style="--d: 4">{button("View the work", "work.html")}{button("Get in touch", "#contact", True)}</div></div></section>')
     slug, tiles = FLOW
     strip = ''.join(f'<figure class="rv" style="--d: {i}"><span class="shot"><img src="{thumb(rel)}" alt="{E(label)}" loading="lazy" data-full="{full(rel)}"></span>'
                     f'<figcaption><b>{i + 1:02d}</b>{E(label)}</figcaption></figure>' for i, (rel, label) in enumerate(tiles))
@@ -141,6 +137,29 @@ def home():
     return doc('Ali Alhusam', desc, body, cls='home'), doc('Ali Alhusam', desc, body, preview_page=True, cls='home')
 
 # ------------------------------------------------------------------ work page
+# selected work as nodes on a Magnific-style canvas: wires draw in, signals travel, nodes drag (site.js)
+NODES = [('national-day-96', '1 / span 6', '0px', '02_National_Day_96/ND_Screen_Wide_Triple.jpg', '16 / 9'),
+         ('altanfeethi-chauffeur', '8 / span 3', '72px', '01_Altanfeethi_Chauffeur/AC_Rome.jpg', '1 / 1'),
+         ('electricity-friend', '2 / span 4', '24px', '19_Saudi_Energy/SE_Poster_Be_The_Hero.jpg', '3 / 4'),
+         ('saudifood-show-2026', '7 / span 6', '0px', '03_Saudifood_2026/mockups_hd/SF_Final_VIP_Wall.jpg', '16 / 9'),
+         ('campaign-key-visuals', '1 / span 4', '40px', '13_Social_Media/SM_Watan_Story.jpg', '1 / 1'),
+         ('ramadan-1447', '6 / span 3', '0px', '04_Ramadan_1447/RM_Greeting_Minister.jpg', '4 / 5'),
+         ('new-horizons', '9 / span 4', '96px', '12_Presentations/PR_Mockup_Horizons.jpg', '16 / 9'),
+         ('alojour-booth', '3 / span 6', '24px', '22_Booths/renders/AJ_CAM_01_Hero_Front.jpg', '16 / 9')]
+
+def node_canvas():
+    nodes = ''
+    for i, (slug, col, mt, rel, ar) in enumerate(NODES):
+        p = BY[slug]
+        nodes += (f'<a class="node" href="work/{slug}.html" draggable="false" data-cursor="Open" style="--col: {col}; --mt: {mt}; --i: {i}">'
+                  f'<span class="port in" aria-hidden="true"></span><span class="port out" aria-hidden="true"></span>'
+                  f'<span class="node-head"><b>{E(p["title"])}</b><small>{E(p["client"].split(",")[0])}</small></span>'
+                  f'<span class="shot"><img src="{thumb(rel)}" srcset="{thumb(rel)} 760w, {full(rel)} 2000w" sizes="(max-width: 900px) 100vw, 50vw" alt="" style="aspect-ratio: {ar}" loading="lazy" draggable="false"></span></a>')
+    return (f'<section class="section wrap" id="selected" aria-labelledby="sel-h">'
+            + section_head('sel-h', 'Selected work', 'Eight projects for MODON, Saudi Energy, the Ministry of Industry, Altanfeethi and Alojour, linked the way they move on a Magnific Spaces canvas.',
+                           '<p class="hint">Drag the nodes. The wires follow.</p>')
+            + f'<div class="canvas"><svg class="wires" aria-hidden="true"></svg>{nodes}</div></section>')
+
 def work_page():
     counts = {k: sum(1 for p in PROJECTS if p['cat'] == k) for k, _ in CATS}
     chips = f'<button class="chip" type="button" data-cat="all" aria-pressed="true">All<span>{len(PROJECTS)}</span></button>' + ''.join(
@@ -157,8 +176,9 @@ def work_page():
              f'<header class="p-head"><h1 class="split" aria-label="Work">{split("Work")}</h1>'
              f'<p class="sub rv" style="--d: 3">Campaigns, event themes, exhibition booths, presentations and social content, plus earlier identity, editorial and packaging work. '
              f'Projects marked Steps show the way from the first sketch to the final file.</p></header></div>')
-    grid = (f'<section class="wrap work-index" aria-label="All projects"><div class="filters rv" role="group" aria-label="Filter projects">{chips}</div>'
-            f'<div class="grid">{cards}</div></section>')
+    grid = (f'<section class="section wrap work-index" id="all" aria-labelledby="all-h">'
+            + section_head('all-h', 'All work', 'Every project, by type. Open one for the brief, the images and, where it applies, the steps from sketch to final.')
+            + f'<div class="filters rv" role="group" aria-label="Filter projects">{chips}</div><div class="grid">{cards}</div></section>')
     figs = ''
     for i, (key, slug) in enumerate((('ND', 'national-day-96'), ('SE', 'electricity-friend'), ('SF', 'saudifood-show-2026'))):
         b = BTS[key]; p = BY[slug]
@@ -167,7 +187,7 @@ def work_page():
     bts = (f'<section class="section wrap" id="bts" aria-labelledby="bts-h">'
            + section_head('bts-h', 'Behind the scenes', 'The real canvases: references, generations and finished designs side by side, the way each campaign was built in Magnific Spaces.')
            + f'<div class="bts-grid">{figs}</div></section>')
-    body = site_header() + f'<main id="main" class="page">{head_}{grid}{bts}</main>{LIGHTBOX}' + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>'
+    body = site_header() + f'<main id="main" class="page">{head_}{node_canvas()}{grid}{bts}</main>{LIGHTBOX}' + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>'
     return doc('Work · Ali Alhusam', 'All projects by Ali Alhusam: campaigns, event themes, exhibition booths, presentations and social content.', body, cls='workpage')
 
 # ------------------------------------------------------------------ project pages

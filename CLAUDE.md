@@ -21,7 +21,7 @@ Run from the repo root. It regenerates `index.html`, `work.html` and `work/*.htm
 - `_build/site.css`, `_build/site.js`: styles and motion
 - `assets/img/<folder>/<name>.webp` (full, max 2000 px) and `<name>.t.webp` (thumbnail, max 760 px);
   `assets/img/meta.json` holds every image's full size, keyed by its original path (`.jpg`/`.png`)
-- `assets/img/hero/portrait*.webp`: the hero cutout (source: `Website_Photo/Ali_Alhusam_Website_Final.png` on Ali's Mac)
+- `assets/img/hero/portrait*.webp`: the old hero cutout, no longer shown on the site
 
 To add a project: export the images as above (both sizes) and add their sizes to `meta.json`, then add an entry
 to `PROJECTS` in `data.py` and rebuild. The source images live on Ali's Mac in the portfolio's `Links/` folder;
@@ -31,14 +31,14 @@ to `PROJECTS` in `data.py` and rebuild. The source images live on Ali's Mac in t
 - One dark brand world: ink `#231F20`, white, lime `#D9F478` (lime only for connections, focus and the contact band).
 - Type: Astoria from Ali's Adobe Fonts web kit `svo2ffi` (domains: 3li3l7usam.github.io, localhost), with Alegreya Sans
   as fallback. Never commit Astoria font files: the designer's licence (Alan Meeks) forbids redistributing them.
-- Home is calm and light (Ali asked for a home that is not loud): a short intro with the name, the portrait and two
-  buttons, a "See the work" band, the sketch-to-final process, about and contact. No project grid on the home page.
-- The work lives on its own page, `work.html` (filters, all projects, behind-the-scenes canvases); "Work" in the menu
-  and the home page buttons lead there.
+- Home is calm and light (Ali asked for a home that is not loud): a type-only intro (no portrait: Ali asked to remove
+  his photo) with two buttons, a "See the work" band, the sketch-to-final process, about and contact. No project grid.
+- The work lives on its own page, `work.html`: the interactive node canvas of selected work first (`NODES` in `gen.py`:
+  wires draw, signals travel, nodes drag), then all projects with filters, then the behind-the-scenes canvases.
 - Project pages with an entry in `STEPS` show a "Step by step" board: sketch, then generation or 3D, then the final.
   Sketches are crude phone photos of notebook doodles, on purpose.
 - Motion: Lenis smooth scroll, reveals on scroll, cursor label on work, page transitions between pages. Everything
-  respects `prefers-reduced-motion`. The node canvas code in `site.js` is unused since v4.
+  respects `prefers-reduced-motion`.
 
 ## Content rules
 - Never write "art director" anywhere.
