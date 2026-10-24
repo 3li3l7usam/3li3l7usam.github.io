@@ -224,7 +224,7 @@ def project(i):
     board = ''
     if p['slug'] in STEPS:
         board = (f'<section class="p-steps" aria-labelledby="steps-h"><div class="section-head"><h2 id="steps-h" class="split" aria-label="Step by step">{split("Step by step")}</h2>'
-                 f'<div class="rv"><p>From the first sketch to the final file.</p></div></div>{steps_board(p["slug"], up)}</section>')
+                 f'<div class="rv"><p>{E(STEPS_NOTE.get(p["slug"], "From the first sketch to the final file."))}</p></div></div>{steps_board(p["slug"], up)}</section>')
     gal = ''
     n = 0
     for items, s in rows([r for r in p['images'] if r != p.get('hero')], lambda rel: is_plate(p, rel)):

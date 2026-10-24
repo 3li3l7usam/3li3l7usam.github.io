@@ -424,3 +424,54 @@ BTS['SH'] = dict(img='20_AI_Process/SE_Hajj_Spaces_Canvas.jpg', window='Magnific
                         ('Generate by moment', 'One Image Generator node per filming moment: arrival, Arafah, Muzdalifah, Mina, day and night.'),
                         ('Select for the storyboard', 'The strongest frame of each moment placed on its slide with the interview and voice-over.')])
 _set('se-hajj-1447', bts='SH')
+
+# ======================================================================== v6: no deck slides, mockups, design-to-reality projects
+CATS = [('campaigns', 'Campaigns & events'), ('booths', 'Booths & spaces'), ('presentations', 'Presentations'),
+        ('social', 'Social media'), ('earlier', 'Earlier work')]
+PROJECTS[:] = [p for p in PROJECTS if p['slug'] not in ('annual-gathering-2025', 'saudifood-2024', 'bonded-zone')]
+_set('multi-story-factories', images=jpg(MS, 'MS_01', 'MS_03', 'MS_04', 'MS_07', 'MS_08', 'MS_05', 'MS_09'),
+     facts=[('Client', 'MODON'), ('Role', 'Campaign identity and design'), ('Scope', 'Posters, infographic, screens, press release')])
+_set('industry-champions', hero=IC + 'IC_Rollups_Mockup.jpg', images=jpg(IC, 'IC_Poster', 'IC_Wall_Banner', 'IC_Popup'),
+     summary='The identity and print suite for MODON’s fifth sports tournament, played in Ramadan by teams from across the industry and mining system: tournament badges, the poster, roll-ups, wall banners and a pop-up wall.',
+     facts=[('Client', 'MODON, Ministry of Industry'), ('Role', 'Identity and design'), ('Scope', 'Badges, poster, roll-ups, banners, pop-up wall')])
+_set('se-hajj-1447', title='Hajj 1447 storyboard', sub='Fourteen scenes, generated in about four hours.', hero=SH + 'SH_Deck_Mockup.jpg', cover=SH + 'AI/SH_AI_02.jpg',
+     summary='A film storyboard for Saudi Energy’s Hajj 1447 readiness campaign. Instead of stock photos or a reference shoot, every scene of the engineers among the pilgrims was generated with AI on one Magnific Spaces canvas: fourteen scenes in about four hours, so the client could see the film before a camera rolled. Shown here: the deck and the AI scenes it used.',
+     facts=[('Client', 'Saudi Energy'), ('Role', 'Storyboard, AI scenes and deck design'), ('AI scenes', '14, in about 4 hours'), ('AI tools', 'Magnific Spaces, Nano Banana Pro')],
+     images=['23_SE_Hajj_1447/AI/SH_AI_%02d.jpg' % i for i in range(1, 13)])
+_set('se-access-control-film', sub='Twenty-two scenes, generated in about 75 minutes.', hero=LN + 'LN_Deck_Mockup.jpg', cover=LN + 'AI/LN_AI_01.jpg',
+     summary='A storyboard for an introductory film on Saudi Energy’s Lenel access-control system for industrial security. The offices, gates, control rooms and staff were all generated with AI: twenty-two scenes in about 75 minutes. Shown here: the deck and the AI scenes it used.',
+     facts=[('Client', 'Saudi Energy'), ('Role', 'Storyboard, AI scenes and deck design'), ('AI scenes', '22, in about 75 minutes'), ('AI tools', 'Magnific Spaces, Nano Banana Pro')],
+     images=['24_SE_Lenel/AI/LN_AI_%02d.jpg' % i for i in range(1, 13)])
+
+AG6, EP, MZ, N95 = '27_Annual_Gathering_2026/', '32_Excellence_Paths/', '33_Modon_Zone/', '34_National_Day_95/'
+_insert_after('multi-story-factories', [
+ dict(slug='annual-gathering', cat='campaigns', title='MODON Annual Gathering', sub='The Ashra identity.', client='MODON',
+      summary='The identity for MODON’s annual staff gathering: a stacked year mark, a hand-lettered “Ashra” slogan, a navy-to-lime palette and a pattern drawn from Sadu weaving, carried onto a branded entrance arch for the venue.',
+      facts=[('Client', 'MODON'), ('Role', 'Event identity and design'), ('Scope', 'Logo, slogan, palette, pattern, entrance arch')],
+      hero=AG6 + 'AG26_Arch_Render_01.jpg', cover=AG6 + 'AG26_Arch_Render_02.jpg',
+      images=jpg(AG6, 'AG26_Logo', 'AG26_Slogan', 'AG26_Colors', 'AG26_Pattern', 'AG26_Arch_Render_02')),
+])
+_insert_after('alqaryah-booth', [
+ dict(slug='excellence-paths-wall', cat='booths', title='Industrial Excellence Paths', sub='From design to the venue wall.', client='MODON',
+      summary='An exhibition wall for an industrial excellence event: seven paths to the top, from people and the industrial revolution to sustainability and women in industry, set in a backlit hexagon strip. Designed flat, then built and lit on site.',
+      facts=[('Client', 'MODON'), ('Role', 'Wall design and content layout'), ('Scope', 'Exhibition wall, backlit strip')],
+      hero=EP + 'EP_Wall_Design.jpg', cover=EP + 'EP_Wall_Photo.jpg', images=jpg(EP, 'EP_Wall_Photo')),
+ dict(slug='modon-zone', cat='booths', title='MODON Zone', sub='Four booths, one zone.', client='MODON',
+      summary='A MODON zone of four 2 × 2 m booths for partner companies: a 5 m frame with MODON branding on top and each company’s booth below. Rendered with real dimensions for approval, then built in the exhibition hall.',
+      facts=[('Client', 'MODON'), ('Role', 'Zone design, 3D render, branding'), ('Scope', 'Four booths, frame branding')],
+      hero=MZ + 'MZ_Booths_Render.jpg', cover=MZ + 'MZ_Booths_Photo.jpg', images=jpg(MZ, 'MZ_Booths_Photo')),
+])
+_insert_after('modon-announcements', [
+ dict(slug='national-day-95', cat='social', title='National Day 95', sub='Glory, made in Saudi.', client='MODON',
+      summary='National Day 95 stories for MODON under the year’s theme: Saudi-made industry, from robotic lines to a drill bit stamped “Saudi made”, set against the national Sadu tree.',
+      facts=[('Client', 'MODON'), ('Role', 'Design'), ('Scope', 'Stories')],
+      hero=None, cover=N95 + 'ND95_Drill_Bit.jpg', images=jpg(N95, 'ND95_Drill_Bit', 'ND95_Robotics')),
+])
+STEPS['excellence-paths-wall'] = [('Design', 'Illustrator, Photoshop', [(EP + 'EP_Wall_Design.jpg', 'Design')], 'The wall drawn flat: seven paths, copy and photography on one hexagon strip.'),
+                                  ('On site', 'Built and lit', [(EP + 'EP_Wall_Photo.jpg', 'Built')], 'Printed, built and backlit at the venue.')]
+STEPS['modon-zone'] = [('Render', 'Blender', [(MZ + 'MZ_Booths_Render.jpg', '3D render')], 'Four booths rendered with real dimensions for approval.'),
+                       ('On site', 'Built in the hall', [(MZ + 'MZ_Booths_Photo.jpg', 'Built')], 'The zone built in the exhibition hall, ready for the partners.')]
+
+STEPS_NOTE = {'excellence-paths-wall': 'From the design file to the wall on site.', 'modon-zone': 'From the 3D render to the booths on site.'}
+_set('excellence-paths-wall', images=[])
+_set('modon-zone', images=[])
