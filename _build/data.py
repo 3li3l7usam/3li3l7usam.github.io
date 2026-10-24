@@ -475,3 +475,13 @@ STEPS['modon-zone'] = [('Render', 'Blender', [(MZ + 'MZ_Booths_Render.jpg', '3D 
 STEPS_NOTE = {'excellence-paths-wall': 'From the design file to the wall on site.', 'modon-zone': 'From the 3D render to the booths on site.'}
 _set('excellence-paths-wall', images=[])
 _set('modon-zone', images=[])
+
+# ======================================================================== v7
+PROJECTS[:] = [p for p in PROJECTS if p['slug'] not in ('annual-gathering', 'saudifood-2025')]
+_set('industry-champions', images=jpg(IC, 'IC_Poster'),
+     summary='The identity for MODON’s fifth sports tournament, played in Ramadan by teams from across the industry and mining system: tournament badges, the poster and roll-ups.',
+     facts=[('Client', 'MODON, Ministry of Industry'), ('Role', 'Identity and design'), ('Scope', 'Badges, poster, roll-ups')])
+# series with many designs: the colour variants and template adaptations were made in Photoshop
+for p in PROJECTS:
+    if len(p['images']) >= 6 and p['cat'] != 'booths' and not any(k in ('Tools', 'AI tools') and 'Photoshop' in v for k, v in p['facts']):
+        p['facts'] = p['facts'] + [('Tools', 'Photoshop for colour variants and template adaptations')]
