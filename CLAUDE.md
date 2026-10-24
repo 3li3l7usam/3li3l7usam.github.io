@@ -42,6 +42,9 @@ to `PROJECTS` in `data.py` and rebuild. The source images live on Ali's Mac in t
 
 ## Content rules
 - Never write "art director" anywhere.
+- No near-duplicates: when a series repeats one design (voting posters, named cards, the same layout in several sizes),
+  show one. Leave out greetings and invitations that carry a person's name (minister, CEO, named employees).
+- Saudi Energy storyboards: say that the scenes were generated with AI on a Magnific Spaces canvas.
 - No company names in Ali's bio.
 - The feedback section stays hidden until real quotes are filled in `FEEDBACK` in `data.py`.
 - Contact shows email, phone (Ali chose to keep it public) and Behance; LinkedIn appears once its URL is set in `CONTACT`.

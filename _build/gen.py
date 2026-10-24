@@ -143,7 +143,7 @@ NODES = [('national-day-96', '1 / span 6', '0px', '02_National_Day_96/ND_Screen_
          ('electricity-friend', '2 / span 4', '24px', '19_Saudi_Energy/SE_Poster_Be_The_Hero.jpg', '3 / 4'),
          ('saudifood-show-2026', '7 / span 6', '0px', '03_Saudifood_2026/mockups_hd/SF_Final_VIP_Wall.jpg', '16 / 9'),
          ('campaign-key-visuals', '1 / span 4', '40px', '13_Social_Media/SM_Watan_Story.jpg', '1 / 1'),
-         ('ramadan-1447', '6 / span 3', '0px', '04_Ramadan_1447/RM_Greeting_Minister.jpg', '4 / 5'),
+         ('ramadan-1447', '6 / span 3', '0px', '04_Ramadan_1447/RM_Greeting_Employees_01.jpg', '4 / 5'),
          ('new-horizons', '9 / span 4', '96px', '12_Presentations/PR_Mockup_Horizons.jpg', '16 / 9'),
          ('alojour-booth', '3 / span 6', '24px', '22_Booths/renders/AJ_CAM_01_Hero_Front.jpg', '16 / 9')]
 

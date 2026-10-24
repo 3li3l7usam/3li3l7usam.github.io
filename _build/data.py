@@ -331,3 +331,90 @@ PROCESS = [('Sketch', 'Pen and paper', 'Every project starts as a rough sketch: 
 
 # the method strip on the home page: one booth, sketch to render
 FLOW = ('alojour-booth', [(BT + 'AJ_0_sketch.jpg', 'Sketch'), (BT + 'AJ_1_outline.jpg', 'Outline'), (BT + 'AJ_2_models.jpg', 'Models'), (BT + 'AJ_3_render.jpg', 'Render')])
+
+# ======================================================================== v5: more MODON events, Saudi Energy storyboards, extra social
+for p in PROJECTS:  # the multi-story factory carousel now lives in its own campaign below
+    if p['slug'] == 'industry-carousels':
+        p.update(title='Food industries carousel', sub='Growth figures, slide by slide.',
+                 summary='A swipeable carousel on the growth of Saudi food and pharma industries, told one figure per slide.',
+                 facts=[('Client', 'MODON'), ('Role', 'Design'), ('Format', '5-slide carousel')],
+                 images=[r for r in p['images'] if 'MultiStory' not in r])
+
+MS, IC, RS, AG, S5, S4, SH, LN, SX = ('28_Multistory_Factories/', '25_Industry_Champions/', '26_Riyadh_Season/', '27_Annual_Gathering_2025/',
+                                      '29_Saudifood_2025/', '30_Saudifood_2024/', '23_SE_Hajj_1447/', '24_SE_Lenel/', '31_Social_Extra/')
+NEW_CAMPAIGNS = [
+ dict(slug='multi-story-factories', cat='campaigns', title='78 factories, one building', sub='Multi-story factories in Dammam.', client='MODON', feat=True,
+      summary='The launch campaign for MODON’s first multi-story factory building in Dammam’s 1st Industrial City: 78 units over 8 floors, told through big numbers, an infographic, screen ads, a press release and the media plan.',
+      facts=[('Client', 'MODON'), ('Role', 'Campaign identity and design'), ('Scope', 'Posters, infographic, screens, press release, media plan')],
+      hero=MS + 'MS_06.jpg', cover=MS + 'MS_01.jpg',
+      images=jpg(MS, 'MS_01', 'MS_03', 'MS_04', 'MS_07', 'MS_08', 'MS_05', 'MS_09', 'MS_10', 'MS_11', 'MS_12')),
+ dict(slug='industry-champions', cat='campaigns', title='Industry Champions', sub='A sports tournament for the industry system.', client='MODON, Ministry of Industry',
+      summary='The identity and print suite for MODON’s fifth sports tournament, played in Ramadan by teams from across the industry and mining system: tournament badges, the poster, investor invitations, roll-ups, wall banners, a pop-up wall and the tournament deck.',
+      facts=[('Client', 'MODON, Ministry of Industry'), ('Role', 'Identity and design'), ('Scope', 'Badges, poster, invitations, roll-ups, banners, deck')],
+      hero=IC + 'IC_Deck_Cover.jpg', cover=IC + 'IC_Poster.jpg',
+      images=jpg(IC, 'IC_Poster', 'IC_Invitation', 'IC_Rollup_Padel', 'IC_Wall_Banner', 'IC_Popup', 'IC_Deck_Pitch')),
+ dict(slug='riyadh-season-2025', cat='campaigns', title='MODON at Riyadh Season', sub='Four spaces in Boulevard World.', client='MODON',
+      summary='The campaign for MODON’s participation in Riyadh Season 2025: screens, stories and posts inviting visitors to four interactive spaces in Boulevard World, from a kids’ factory to a VIP ticket.',
+      facts=[('Client', 'MODON'), ('Role', 'Campaign design'), ('Scope', 'Screens, stories, social posts')],
+      hero=RS + 'RS_Voice_Of_Industry.jpg', cover=RS + 'RS_Explore.jpg',
+      images=jpg(RS, 'RS_Explore', 'RS_Spaces_Map', 'RS_VIP_Ticket', 'RS_Join_Us')),
+ dict(slug='annual-gathering-2025', cat='campaigns', title='MODON Annual Gathering 2025', sub='One night, one identity.', client='MODON',
+      summary='The identity for MODON’s annual staff gathering: a 2025 mark in four colourways, a facet pattern drawn from the MODON skyline, invitations and a boxed invitation, announcements for email and screens, a Diwaniya theme and thank-you cards for employees’ families.',
+      facts=[('Client', 'MODON'), ('Role', 'Event identity and design'), ('Scope', 'Logo, pattern, invitations, screens, cards')],
+      hero=AG + 'AG_Identity_Cover.jpg', cover=AG + 'AG_Logo_Options.jpg',
+      images=jpg(AG, 'AG_Logo_Options', 'AG_Identity_System', 'AG_Invitation_Mockup_Closed', 'AG_Invitation_Mockup_Open', 'AG_Invitation_Minister',
+                 'AG_Announcement', 'AG_Diwaniya', 'AG_Family_Card')),
+ dict(slug='saudifood-2025', cat='campaigns', title='Saudifood 2025', sub='Two events, two themes.', client='MODON',
+      summary='MODON’s presence at two food-industry events in 2025. Saudi Food Manufacturing, in deep navy, under “A new era in food manufacturing”, with invitations, the agenda, hall banners and pillar branding; and The Saudifood Show in green, with the general invitation, the opening agenda and the conference programme proposal.',
+      facts=[('Client', 'MODON'), ('Role', 'Event themes and design'), ('Scope', 'Invitations, agendas, hall branding, proposal deck')],
+      hero=S5 + 'SFM_Banner_Wide.jpg', cover=S5 + 'SFM_Connected_Communities.jpg',
+      images=jpg(S5, 'SFM_Invitation_VIP', 'SFM_Agenda', 'SFM_Connected_Communities', 'SFM_Operational_Efficiency', 'SFM_Hall_Freestanding',
+                 'SFS25_Invitation', 'SFS25_Agenda', 'SFS25_Conference_Proposal')),
+ dict(slug='saudifood-2024', cat='campaigns', title='Saudifood 2024', sub='Empowering the food industry.', client='MODON',
+      summary='The show logo and MODON’s event suite for The Saudifood Show 2024: invitations, the opening-ceremony agenda, an infographic on MODON’s support for food manufacturers, screens, pillar branding and the stage design.',
+      facts=[('Client', 'MODON'), ('Role', 'Logo, event theme and design'), ('Scope', 'Logo, invitations, agenda, infographic, screens, stage')],
+      hero=S4 + 'SF24_Logo.jpg', cover=S4 + 'SF24_36_Cities.jpg',
+      images=jpg(S4, 'SF24_36_Cities', 'SF24_Infographic', 'SF24_Invitation', 'SF24_Agenda', 'SF24_Screen_Tall', 'SF24_Pillar', 'SF24_Stage_Model')),
+]
+NEW_DECKS = [
+ dict(slug='se-hajj-1447', cat='presentations', title='Hajj 1447 storyboard', sub='Every scene generated with AI.', client='Saudi Energy', ai=True, feat=True,
+      summary='A film storyboard for Saudi Energy’s Hajj 1447 readiness campaign: one filming day for each stage of Hajj, each with its location, timing, interview and voice-over. Every scene of the engineers among the pilgrims was generated with AI on a Magnific Spaces canvas, so the client could see the film before a camera rolled.',
+      facts=[('Client', 'Saudi Energy'), ('Role', 'Storyboard, AI scenes and deck design'), ('Format', '27 slides, Arabic'), ('AI tools', 'Magnific Spaces, Nano Banana Pro')],
+      hero=SH + 'SH_26.jpg', cover=SH + 'SH_05.jpg',
+      images=jpg(SH, 'SH_01', 'SH_02', 'SH_04', 'SH_05', 'SH_07', 'SH_10', 'SH_14', 'SH_17', 'SH_19')),
+ dict(slug='se-access-control-film', cat='presentations', title='Access control film', sub='A storyboard built with AI scenes.', client='Saudi Energy', ai=True,
+      summary='A storyboard for an introductory film on Saudi Energy’s Lenel access-control system for industrial security, in three chapters, each scene with its shot and voice-over. The offices, gates, control rooms and staff were all generated with AI on a Magnific Spaces canvas.',
+      facts=[('Client', 'Saudi Energy'), ('Role', 'Storyboard, AI scenes and deck design'), ('Format', '29 slides, Arabic'), ('AI tools', 'Magnific Spaces, Nano Banana Pro')],
+      hero=LN + 'LN_01.jpg', cover=LN + 'LN_10.jpg',
+      images=jpg(LN, 'LN_02', 'LN_04', 'LN_10', 'LN_13', 'LN_16', 'LN_21')),
+]
+NEW_SOCIAL = [
+ dict(slug='altanfeethi-international', cat='social', title='Altanfeethi International', sub='Now at London Heathrow.', client='Altanfeethi',
+      summary='Launch posts for Altanfeethi International, the chauffeur service’s meet-and-greet at selected airports abroad, starting with London Heathrow.',
+      facts=[('Client', 'Altanfeethi'), ('Role', 'Design'), ('Scope', 'Launch posts')],
+      hero=None, cover=SX + 'AT_Intl_Arrival.jpg', images=jpg(SX, 'AT_Intl_Arrival', 'AT_Intl_London')),
+ dict(slug='industrial-center-founding-day', cat='social', title='Founding Day', sub='From our ancestors’ heritage to today’s industry.', client='Industrial Center',
+      summary='A Founding Day post for the Industrial Center that moves from the heritage of Diriyah to the centre’s modern building in one warm, sandstone palette.',
+      facts=[('Client', 'Industrial Center'), ('Role', 'Design'), ('Scope', 'Social post')],
+      hero=None, cover=SX + 'IC_Founding_Day.jpg', images=jpg(SX, 'IC_Founding_Day')),
+]
+def _insert_after(slug, items):
+    i = next(k for k, p in enumerate(PROJECTS) if p['slug'] == slug) + 1
+    PROJECTS[i:i] = items
+_insert_after('campaign-key-visuals', NEW_CAMPAIGNS)
+_i = next(k for k, p in enumerate(PROJECTS) if p['cat'] == 'presentations'); PROJECTS[_i:_i] = NEW_DECKS
+_insert_after('altanfeethi-social', NEW_SOCIAL)
+
+# one image per repeated design, and no greetings that carry a person's name
+def _set(slug, **kw):
+    next(p for p in PROJECTS if p['slug'] == slug).update(kw)
+_set('ruqi', images=['05_Ruqi/RQ_Logo.png'] + jpg('05_Ruqi/', 'RQ_Poster_Main', 'RQ_Poster_Ideas', 'RQ_Poster_Objectives'))
+_set('dour-dourak', images=jpg('07_Dour_Dourak/', 'DD_Logo', 'DD_Close_to_You', 'DD_Your_Space', 'DD_Change_01', 'DD_Phase2_A', 'DD_Screen_Goals'))
+_set('ramadan-1447', cover='04_Ramadan_1447/RM_Greeting_Employees_01.jpg',
+     summary='A seasonal theme for MODON: a hand-lettered wordmark, a blue-to-green light gradient and one layout system, applied to greetings for staff and investors and a download card.',
+     images=jpg('04_Ramadan_1447/', 'RM_Greeting_Employees_01', 'RM_Greeting_Investors', 'RM_Greeting_Link_Ad') + ['04_Ramadan_1447/RM_Wordmark_Calligraphy.png'])
+_set('eid-al-fitr-1447', cover='10_Eid_Al-Fitr_1447/EF_Identity_02.jpg',
+     summary='A seasonal theme for MODON: a hand-lettered Eid wordmark holding the Saudi coffee pot, glossy 3D festive objects and a soft blue-to-green wash.',
+     facts=[('Client', 'MODON, Ministry of Industry'), ('Role', 'Theme and design'), ('Scope', 'Wordmark, identity, 3D objects')],
+     images=jpg('10_Eid_Al-Fitr_1447/', 'EF_Identity_02', 'EF_Identity_03'))
+_set('eid-al-adha-1447', images=jpg('11_Eid_Al-Adha_1447/', 'EA_Identity_02', 'EA_Identity_03', 'EA_Identity_07', 'EA_Cards_Download_Ad', 'EA_Email_Work_Hours', 'EA_Greeting_Investors'))
