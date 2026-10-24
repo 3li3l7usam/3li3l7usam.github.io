@@ -180,7 +180,7 @@ def work_page():
             + section_head('all-h', 'All work', 'Every project, by type. Open one for the brief, the images and, where it applies, the steps from sketch to final.')
             + f'<div class="filters rv" role="group" aria-label="Filter projects">{chips}</div><div class="grid">{cards}</div></section>')
     figs = ''
-    for i, (key, slug) in enumerate((('ND', 'national-day-96'), ('SE', 'electricity-friend'), ('SF', 'saudifood-show-2026'))):
+    for i, (key, slug) in enumerate((('ND', 'national-day-96'), ('SE', 'electricity-friend'), ('SF', 'saudifood-show-2026'), ('SH', 'se-hajj-1447'))):
         b = BTS[key]; p = BY[slug]
         figs += (f'<figure class="rv" style="--d: {i}">{window(b["img"], b["window"], alt="Magnific Spaces canvas for " + p["title"])}'
                  f'<figcaption><span>{E(b["title"])}. {E(b["steps"][1][1])}</span><a href="work/{slug}.html">See {E(p["title"])}</a></figcaption></figure>')

@@ -418,3 +418,9 @@ _set('eid-al-fitr-1447', cover='10_Eid_Al-Fitr_1447/EF_Identity_02.jpg',
      facts=[('Client', 'MODON, Ministry of Industry'), ('Role', 'Theme and design'), ('Scope', 'Wordmark, identity, 3D objects')],
      images=jpg('10_Eid_Al-Fitr_1447/', 'EF_Identity_02', 'EF_Identity_03'))
 _set('eid-al-adha-1447', images=jpg('11_Eid_Al-Adha_1447/', 'EA_Identity_02', 'EA_Identity_03', 'EA_Identity_07', 'EA_Cards_Download_Ad', 'EA_Email_Work_Hours', 'EA_Greeting_Investors'))
+
+BTS['SH'] = dict(img='20_AI_Process/SE_Hajj_Spaces_Canvas.jpg', window='Magnific Spaces — Saudi Energy, Hajj 1447', title='Sixteen scenes, one canvas',
+                 steps=[('Brand reference', 'The Saudi Energy logo set as a fixed reference, so every uniform carries the right mark.'),
+                        ('Generate by moment', 'One Image Generator node per filming moment: arrival, Arafah, Muzdalifah, Mina, day and night.'),
+                        ('Select for the storyboard', 'The strongest frame of each moment placed on its slide with the interview and voice-over.')])
+_set('se-hajj-1447', bts='SH')

@@ -207,7 +207,7 @@ main.page { padding-top: var(--head-h); }
 .window img { width: 100%; transition: transform 1.6s var(--ease); cursor: zoom-in; }
 .window:hover img { transform: scale(1.035); }
 .bts-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(24px, 3vw, 48px); }
-.bts-grid figure:first-child { grid-column: 1 / -1; }
+.bts-grid figure:first-child, .bts-grid figure:last-child:nth-child(even) { grid-column: 1 / -1; }
 .bts-grid figure { margin: 0; display: flex; flex-direction: column; gap: 14px; }
 .bts-grid figcaption { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; color: var(--mute); }
 .bts-grid figcaption a, .link { color: var(--paper); text-decoration: none; background: linear-gradient(var(--lime), var(--lime)) left bottom / 100% 1px no-repeat; padding-bottom: 2px; transition: background-size 0.45s var(--ease); }
