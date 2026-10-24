@@ -483,5 +483,5 @@ _set('industry-champions', images=jpg(IC, 'IC_Poster'),
      facts=[('Client', 'MODON, Ministry of Industry'), ('Role', 'Identity and design'), ('Scope', 'Badges, poster, roll-ups')])
 # series with many designs: the colour variants and template adaptations were made in Photoshop
 for p in PROJECTS:
-    if len(p['images']) >= 6 and p['cat'] != 'booths' and not any(k in ('Tools', 'AI tools') and 'Photoshop' in v for k, v in p['facts']):
+    if len(p['images']) >= 6 and p['cat'] in ('campaigns', 'social') and not any(k in ('Tools', 'AI tools') and 'Photoshop' in v for k, v in p['facts']):
         p['facts'] = p['facts'] + [('Tools', 'Photoshop for colour variants and template adaptations')]
