@@ -522,3 +522,10 @@ CATDESC.update({
 _set('logo-design', cat='logos')
 _order = [k for k, _ in CATS]
 PROJECTS.sort(key=lambda p: _order.index(p['cat']))
+
+# no financial or performance reports among the infographics
+_ig = next(p for p in PROJECTS if p['slug'] == 'infographics')
+_ig['images'] = [r for r in _ig['images'] if not any(k in r for k in ('IG_05_Q1_2024', 'IG_18_Q2_2024'))]
+_ig.update(cover=IG + 'IG_01_Jouf.jpg',
+           summary='Eighteen vertical infographics for MODON’s social channels and internal communications: industrial city profiles, launches, agreements and awareness days. Each one turns a dense set of figures into a single reading path, built on the MODON grid.',
+           facts=[('Client', 'MODON'), ('Role', 'Information design'), ('Scope', '18 infographics, social and internal'), ('Tools', 'Illustrator, Photoshop')])
