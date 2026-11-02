@@ -160,46 +160,63 @@ def node_canvas():
                            '<p class="hint">Drag the nodes. The wires follow.</p>')
             + f'<div class="canvas"><svg class="wires" aria-hidden="true"></svg>{nodes}</div></section>')
 
+def field_items(k):
+    """(projects, single-series project or None) for one field"""
+    ps = [p for p in PROJECTS if p['cat'] == k]
+    return ps, (ps[0] if len(ps) == 1 and len(ps[0]['images']) > 6 else None)
+
+def field_count(k):
+    ps, one = field_items(k)
+    return (len(one['images']), 'pieces') if one else (len(ps), 'project' if len(ps) == 1 else 'projects')
+
+def field_url(k, up=''): return f'{up}fields/{k}.html'
+
 def work_page():
-    counts = {k: sum(1 for p in PROJECTS if p['cat'] == k) for k, _ in CATS}
-    def card(i, p):
+    tiles = ''
+    for i, (k, n) in enumerate(CATS):
+        ps, one = field_items(k)
+        pics = (one['images'][:3] if one else [p['cover'] for p in ps[:3]])
+        stack = ''.join(f'<img src="{thumb(r)}" alt="" loading="lazy" style="--k: {j}">' for j, r in enumerate(pics))
+        c, unit = field_count(k)
+        tiles += (f'<a class="ftile rv{" plate" if k == "logos" else ""}" href="{field_url(k)}" data-cursor="Open" style="--d: {i}">'
+                  f'<span class="ftile-text"><span class="no">{i + 1:02d}</span><b>{E(n)}</b><span class="desc">{E(CATDESC[k])}</span>'
+                  f'<span class="meta"><span class="cnt">{c} {unit}</span><i aria-hidden="true"></i></span></span>'
+                  f'<span class="stack" aria-hidden="true">{stack}</span></a>')
+    head_ = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="index.html">Home</a> / Work</nav>'
+             f'<header class="p-head"><h1 class="split" aria-label="Work">{split("Work")}</h1>'
+             f'<p class="sub rv" style="--d: 3">{len(CATS)} fields. Pick one to see its work.</p></header></div>')
+    body = (site_header() + f'<main id="main" class="page">{head_}<section class="wrap ftiles" aria-label="Fields">{tiles}</section></main>'
+            + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>')
+    return doc('Work · Ali Alhusam', 'The work of Ali Alhusam by field: logos, campaigns, infographics, social media, booths, presentations and editorial.', body, cls='workpage')
+
+def field_page(i):
+    k, n = CATS[i]; up = '../'
+    ps, one = field_items(k)
+    def card(j, p):
         tw, th = tsize(p['cover'])
         ai = '<span class="ai">AI</span>' if p.get('ai') else ''
         st = '<span class="ai st">Steps</span>' if p['slug'] in STEPS else ''
-        return (f'<a class="card rv{" plate" if p.get("plate") else ""}" href="work/{p["slug"]}.html" data-cursor="View" style="--d: {i % 5}">'
-                f'<span class="shot"><img src="{thumb(p["cover"])}" width="{tw}" height="{th}" alt="" loading="lazy" style="{vt(p["slug"])}"></span>'
+        return (f'<a class="card rv{" plate" if p.get("plate") else ""}" href="../work/{p["slug"]}.html" data-cursor="View" style="--d: {j % 5}">'
+                f'<span class="shot"><img src="{thumb(p["cover"], up)}" width="{tw}" height="{th}" alt="" loading="lazy" style="{vt(p["slug"])}"></span>'
                 f'<span><b>{E(p["title"])}</b>{ai}{st}<small>{E(p["client"])}</small></span></a>')
-    head_ = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="index.html">Home</a> / Work</nav>'
-             f'<header class="p-head"><h1 class="split" aria-label="Work">{split("Work")}</h1>'
-             f'<p class="sub rv" style="--d: 3">The work in {len(CATS)} fields. Pick a field, or scroll through them in order. '
-             f'Projects marked Steps show the way from the first sketch to the final file.</p></header>'
-             f'<nav class="fields rv" aria-label="Fields">' + ''.join(
-                 f'<a href="#f-{k}"><b>{E(n)}</b><span>{counts[k] if k != "infographics" else sum(len(p["images"]) for p in PROJECTS if p["cat"] == k)}</span></a>' for k, n in CATS) + '</nav></div>')
-    grid = ''
-    for k, n in CATS:
-        ps = [p for p in PROJECTS if p['cat'] == k]
-        if len(ps) == 1 and len(ps[0]['images']) > 6:  # one series of many pieces: show the pieces themselves
-            p = ps[0]
-            cards = ''.join(f'<a class="card rv" href="work/{p["slug"]}.html" data-cursor="View" style="--d: {i % 5}"><span class="shot">'
-                            f'<img src="{thumb(r)}" width="{tsize(r)[0]}" height="{tsize(r)[1]}" alt="{E(p["title"])}, {i + 1}" loading="lazy"></span></a>'
-                            for i, r in enumerate(p['images']))
-            label = f'{len(p["images"])} {n.lower()}'
-        else:
-            cards = ''.join(card(i, p) for i, p in enumerate(ps))
-            label = f'{len(ps)} project' + ('' if len(ps) == 1 else 's')
-        grid += (f'<section class="section wrap field" id="f-{k}" aria-labelledby="h-{k}">'
-                 + section_head('h-' + k, n, E(CATDESC[k]) + f' <span class="count">{label}</span>')
-                 + f'<div class="grid">{cards}</div></section>')
-    figs = ''
-    for i, (key, slug) in enumerate((('ND', 'national-day-96'), ('SE', 'electricity-friend'), ('SF', 'saudifood-show-2026'), ('SH', 'se-hajj-1447'))):
-        b = BTS[key]; p = BY[slug]
-        figs += (f'<figure class="rv" style="--d: {i}">{window(b["img"], b["window"], alt="Magnific Spaces canvas for " + p["title"])}'
-                 f'<figcaption><span>{E(b["title"])}. {E(b["steps"][1][1])}</span><a href="work/{slug}.html">See {E(p["title"])}</a></figcaption></figure>')
-    bts = (f'<section class="section wrap" id="bts" aria-labelledby="bts-h">'
-           + section_head('bts-h', 'Behind the scenes', 'The real canvases: references, generations and finished designs side by side, the way each campaign was built in Magnific Spaces.')
-           + f'<div class="bts-grid">{figs}</div></section>')
-    body = site_header() + f'<main id="main" class="page">{head_}{grid}{node_canvas()}{bts}</main>{LIGHTBOX}' + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>'
-    return doc('Work · Ali Alhusam', 'All projects by Ali Alhusam: campaigns, event themes, exhibition booths, presentations and social content.', body, cls='workpage')
+    if one:  # a single series of many pieces: show the pieces, each opens the full view
+        cards = ''.join(f'<figure class="card rv{" plate" if one.get("plate") else ""}" style="--d: {j % 5}"><span class="shot">'
+                        f'<img src="{thumb(r, up)}" width="{tsize(r)[0]}" height="{tsize(r)[1]}" alt="{E(one["title"])}, {j + 1}" loading="lazy" data-full="{full(r, up)}"></span></figure>'
+                        for j, r in enumerate(one['images']))
+        more = f'<p class="rv field-more"><a class="link" href="../work/{one["slug"]}.html">{E(one["title"])}: the brief and the full set</a></p>'
+    else:
+        cards = ''.join(card(j, p) for j, p in enumerate(ps)); more = ''
+    c, unit = field_count(k)
+    nk, nn = CATS[(i + 1) % len(CATS)]
+    top = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="../work.html">Work</a> / {E(n)}</nav>'
+           f'<header class="p-head"><p class="field-no rv">{i + 1:02d} / {len(CATS):02d}</p><h1 class="split" aria-label="{E(n)}">{split(n)}</h1>'
+           f'<p class="sub rv" style="--d: 3">{E(CATDESC[k])} <span class="count">{c} {unit}</span></p></header>'
+           f'<nav class="field-tabs rv" aria-label="Fields">' + ''.join(
+               f'<a href="{kk}.html"{" aria-current=page" if kk == k else ""}>{E(nm)}</a>' for kk, nm in CATS) + '</nav>'
+           f'<section class="grid field-grid" aria-label="{E(n)}">{cards}</section>{more}'
+           f'<a class="next" href="{nk}.html" data-cursor="Next"><small><span>Next field</span><span>{(i + 1) % len(CATS) + 1:02d} / {len(CATS):02d}</span></small><b>{E(nn)}</b></a></div>')
+    body = site_header(up) + f'<main id="main" class="page">{top}</main>{LIGHTBOX}' + contact_band() + '<div class="cursor" aria-hidden="true"><span></span></div>'
+    return doc(f'{n} · Ali Alhusam', CATDESC[k], body, up, cls='fieldpage')
 
 # ------------------------------------------------------------------ project pages
 def rows(images, plate=lambda rel: False, target=3.3):
@@ -217,7 +234,7 @@ def rows(images, plate=lambda rel: False, target=3.3):
 def project(i):
     p = PROJECTS[i]; up = '../'
     facts = ''.join(f'<div><dt>{E(k)}</dt><dd>{E(v)}</dd></div>' for k, v in p['facts'])
-    top = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="../work.html">Work</a> / {E(CATNAME[p["cat"]])}</nav>'
+    top = (f'<div class="wrap"><nav class="crumbs rv" aria-label="Breadcrumb"><a href="../work.html">Work</a> / <a href="../fields/{p["cat"]}.html">{E(CATNAME[p["cat"]])}</a></nav>'
            f'<header class="p-head"><h1 class="split" aria-label="{E(p["title"])}">{split(p["title"])}</h1><p class="sub rv" style="--d: 3">{E(p["sub"])}</p></header>'
            f'<div class="p-intro"><p class="summary rv" style="--d: 4">{E(p["summary"])}</p><dl class="facts rv" style="--d: 5">{facts}</dl></div>')
     named = False
@@ -271,10 +288,13 @@ idx, idx_prev = home()
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(idx)
 if PREVIEW: open(os.path.join(OUT, '_preview_page.html'), 'w', encoding='utf-8').write(idx_prev)
 open(os.path.join(OUT, 'work.html'), 'w', encoding='utf-8').write(work_page())
+os.makedirs(os.path.join(OUT, 'fields'), exist_ok=True)
+for i, (k, _) in enumerate(CATS):
+    open(os.path.join(OUT, 'fields', k + '.html'), 'w', encoding='utf-8').write(field_page(i))
 for i, p in enumerate(PROJECTS):
     open(os.path.join(OUT, 'work', p['slug'] + '.html'), 'w', encoding='utf-8').write(project(i))
 shutil.copy(os.path.join(SRC, 'site.css'), os.path.join(OUT, 'assets/site.css'))
 shutil.copy(os.path.join(SRC, 'site.js'), os.path.join(OUT, 'assets/site.js'))
 json.dump(sorted(USED), open(os.path.join(OUT, '_used.json'), 'w'), indent=0)
 missing = [u for u in USED if not os.path.exists(os.path.join(OUT, 'assets/img', u))]
-print('pages', 2 + len(PROJECTS), 'images used', len(USED), 'missing', missing)
+print('pages', 2 + len(CATS) + len(PROJECTS), 'images used', len(USED), 'missing', missing)

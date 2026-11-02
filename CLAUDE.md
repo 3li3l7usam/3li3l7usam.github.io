@@ -33,9 +33,9 @@ to `PROJECTS` in `data.py` and rebuild. The source images live on Ali's Mac in t
   as fallback. Never commit Astoria font files: the designer's licence (Alan Meeks) forbids redistributing them.
 - Home is calm and light (Ali asked for a home that is not loud): a type-only intro (no portrait: Ali asked to remove
   his photo) with two buttons, a "See the work" band, the sketch-to-final process, about and contact. No project grid.
-- The work lives on its own page, `work.html`, grouped by field (`CATS`, `CATDESC`): a field index, one section per field
-  (a field holding one large series, like the infographics, shows the pieces themselves), then the node canvas of selected work (`NODES` in `gen.py`:
-  wires draw, signals travel, nodes drag), then all projects with filters, then the behind-the-scenes canvases.
+- The work page `work.html` shows only the fields, as interactive tiles (covers fan out on hover, a light follows the
+  pointer). Each field has its own page, `fields/<cat>.html`, in Ali's order: logos, campaigns, infographics, social,
+  booths, presentations, editorial and packaging (`CATS`). A field holding one large series shows the pieces themselves.
 - Project pages with an entry in `STEPS` show a "Step by step" board: sketch, then generation or 3D, then the final.
   Sketches are crude phone photos of notebook doodles, on purpose.
 - Motion: Lenis smooth scroll, reveals on scroll, cursor label on work, page transitions between pages. Everything

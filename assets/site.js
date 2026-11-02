@@ -373,6 +373,15 @@
     lb.addEventListener('click', function (e) { if (e.target === lb || e.target === $('.lb-inner', lb)) lb.close(); });
   }
 
+  /* ---------- field tiles: a soft light follows the pointer */
+  if (fine) $$('.ftile').forEach(function (t) {
+    t.addEventListener('pointermove', function (e) {
+      var r = t.getBoundingClientRect();
+      t.style.setProperty('--mx', (e.clientX - r.left).toFixed(0) + 'px');
+      t.style.setProperty('--my', (e.clientY - r.top).toFixed(0) + 'px');
+    });
+  });
+
   /* ---------- copy buttons */
   $$('.copy').forEach(function (b) {
     b.addEventListener('click', function () {

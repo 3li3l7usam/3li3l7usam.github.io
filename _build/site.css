@@ -435,3 +435,57 @@ main.page { padding-top: var(--head-h); }
 .field { scroll-margin-top: calc(var(--head-h) + 16px); }
 .field .section-head { margin-bottom: clamp(24px, 3vw, 44px); }
 .section-head .count { display: block; margin-top: 8px; color: var(--lime); font-size: var(--step--1); }
+
+/* ---------- work page v9: only the fields, as large interactive tiles; each opens its own page */
+.ftiles { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(14px, 1.6vw, 24px); padding-bottom: clamp(72px, 9vw, 136px); }
+.ftile { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr); align-items: stretch; min-height: clamp(280px, 26vw, 380px);
+  padding: clamp(22px, 2.4vw, 36px); border: 1px solid var(--rule); border-radius: calc(var(--radius) * 1.6); overflow: hidden; text-decoration: none;
+  background: radial-gradient(420px circle at var(--mx, 70%) var(--my, 30%), rgba(217, 244, 120, 0.10), transparent 60%), var(--ink-2);
+  transition: border-color 0.4s, transform 0.6s var(--ease); isolation: isolate; }
+.ftile:first-child { grid-column: 1 / -1; min-height: clamp(300px, 30vw, 440px); }
+.ftile:hover, .ftile:focus-visible { border-color: var(--lime); }
+.ftile-text { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 2; }
+.ftile .no { color: var(--lime); font-size: var(--step--1); font-weight: 500; letter-spacing: 0.12em; }
+.ftile b { font-size: clamp(2rem, 3.6vw, 3.5rem); font-weight: 800; letter-spacing: -0.03em; line-height: 0.98; max-width: 10ch; }
+.ftile .desc { color: var(--mute); max-width: 34ch; font-size: 1.0625rem; }
+.ftile .meta { margin-top: auto; display: flex; align-items: center; gap: 14px; }
+.ftile .cnt { font-size: var(--step--1); color: var(--paper); border: 1px solid var(--rule); border-radius: 999px; padding: 6px 12px; transition: border-color 0.4s, background-color 0.4s, color 0.4s; }
+.ftile:hover .cnt { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+.ftile .meta i { position: relative; width: 22px; height: 2px; background: var(--paper); transition: width 0.5s var(--ease), background-color 0.4s; }
+.ftile .meta i::after { content: ""; position: absolute; right: 0; top: -4px; width: 8px; height: 8px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; color: inherit; transform: rotate(45deg); border-color: inherit; }
+.ftile .meta i::after { border-top-color: var(--paper); border-right-color: var(--paper); }
+.ftile:hover .meta i { width: 44px; background: var(--lime); }
+.ftile:hover .meta i::after { border-top-color: var(--lime); border-right-color: var(--lime); }
+/* three covers, stacked; they fan out and lift as the pointer comes in */
+.stack { position: relative; margin-left: 6%; }
+.stack img { position: absolute; left: 50%; bottom: -8%; width: 52%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 8px; background: var(--ink-3);
+  box-shadow: 0 24px 48px -18px rgba(0, 0, 0, 0.7); transform-origin: 50% 100%;
+  transform: translateX(calc(-50% + (var(--k) - 1) * 14%)) rotate(calc((var(--k) - 1) * 5deg)) translateY(calc(var(--k) * 3%));
+  transition: transform 0.9s var(--ease), filter 0.6s; filter: saturate(0.85) brightness(0.9); }
+.stack img:nth-child(2) { z-index: 2; } .stack img:nth-child(1) { z-index: 1; } .stack img:nth-child(3) { z-index: 3; }
+.ftile:hover .stack img, .ftile:focus-visible .stack img { filter: none;
+  transform: translateX(calc(-50% + (var(--k) - 1) * 34%)) rotate(calc((var(--k) - 1) * 8deg)) translateY(calc(-12% + (var(--k) - 1) * (var(--k) - 1) * 5%)); }
+.ftile:first-child .stack img { width: 34%; }
+.ftile:first-child:hover .stack img { transform: translateX(calc(-50% + (var(--k) - 1) * 72%)) rotate(calc((var(--k) - 1) * 7deg)) translateY(calc(-12% + (var(--k) - 1) * (var(--k) - 1) * 6%)); }
+.ftile.plate .stack img { object-fit: contain; padding: 12%; background: var(--ink-3); filter: none; }
+.motion .ftile.rv { transform: translateY(40px) scale(0.98); }
+.motion .ftile.rv.in { transform: none; }
+@media (max-width: 860px) {
+  .ftiles { grid-template-columns: 1fr; }
+  .ftile, .ftile:first-child { grid-template-columns: 1fr; min-height: 0; }
+  .stack { height: 220px; margin-top: 18px; }
+  .stack img, .ftile:first-child .stack img { width: 38%; bottom: 0; }
+}
+@media (hover: none) { .stack img { transform: translateX(calc(-50% + (var(--k) - 1) * 50%)) rotate(calc((var(--k) - 1) * 7deg)); filter: none; } }
+
+/* ---------- field pages */
+.field-no { color: var(--lime); font-size: var(--step--1); letter-spacing: 0.12em; margin-bottom: 14px; }
+.p-head .count { display: inline-block; margin-left: 8px; color: var(--lime); font-size: var(--step--1); }
+.field-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: clamp(28px, 4vw, 56px); }
+.field-tabs a { text-decoration: none; font-size: var(--step--1); border: 1px solid var(--rule); border-radius: 999px; padding: 8px 14px; color: var(--mute); transition: border-color 0.3s, color 0.3s, background-color 0.3s; }
+.field-tabs a:hover { color: var(--paper); border-color: var(--paper); }
+.field-tabs a[aria-current="page"] { background: var(--lime); border-color: var(--lime); color: var(--ink); }
+.field-grid { padding-bottom: clamp(40px, 5vw, 72px); }
+.field-grid figure.card { margin: 0; }
+.field-grid figure.card img { cursor: zoom-in; }
+.field-more { padding-bottom: clamp(40px, 5vw, 72px); }

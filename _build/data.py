@@ -511,3 +511,14 @@ _insert_after('modon-zone', [
 # keep projects in field order on the site
 _order = [k for k, _ in CATS]
 PROJECTS.sort(key=lambda p: _order.index(p['cat']))
+
+# ======================================================================== v9: fields in Ali's order, Logo design first
+CATS = [('logos', 'Logo design'), ('campaigns', 'Campaigns & events'), ('infographics', 'Infographics'), ('social', 'Social media'),
+        ('booths', 'Booths & spaces'), ('presentations', 'Presentations & storyboards'), ('earlier', 'Editorial & packaging')]
+CATDESC.update({
+ 'logos': 'Marks for brands in media, software, retail and fragrance, each reduced to one clear idea.',
+ 'earlier': 'An annual report, a company profile and fragrance packaging.',
+})
+_set('logo-design', cat='logos')
+_order = [k for k, _ in CATS]
+PROJECTS.sort(key=lambda p: _order.index(p['cat']))
