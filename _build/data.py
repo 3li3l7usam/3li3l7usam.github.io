@@ -485,3 +485,29 @@ _set('industry-champions', images=jpg(IC, 'IC_Poster'),
 for p in PROJECTS:
     if len(p['images']) >= 6 and p['cat'] in ('campaigns', 'social') and not any(k in ('Tools', 'AI tools') and 'Photoshop' in v for k, v in p['facts']):
         p['facts'] = p['facts'] + [('Tools', 'Photoshop for colour variants and template adaptations')]
+
+# ======================================================================== v8: infographics, work grouped by field
+CATS = [('campaigns', 'Campaigns & events'), ('booths', 'Booths & spaces'), ('infographics', 'Infographics'),
+        ('presentations', 'Presentations & storyboards'), ('social', 'Social media'), ('earlier', 'Earlier work')]
+CATDESC = {
+ 'campaigns': 'Campaign ideas, event themes and seasonal identities, carried across every touchpoint.',
+ 'booths': 'Exhibition booths and spaces, from the first sketch and 3D model to the built stand.',
+ 'infographics': 'Numbers, launches and agreements turned into one clear vertical story.',
+ 'presentations': 'Executive decks and film storyboards, including AI-generated scenes.',
+ 'social': 'Always-on posts and stories for brands and government entities.',
+ 'earlier': 'Logos, editorial and packaging from before 2023.',
+}
+IG = '35_Infographics/'
+_insert_after('modon-zone', [
+ dict(slug='infographics', cat='infographics', title='MODON infographics', sub='Figures, made readable.', client='MODON', feat=True,
+      summary='Twenty vertical infographics for MODON’s social channels and internal communications: industrial city profiles, quarterly performance, launches, agreements and awareness days. Each one turns a dense set of figures into a single reading path, built on the MODON grid.',
+      facts=[('Client', 'MODON'), ('Role', 'Information design'), ('Scope', '20 infographics, social and internal'), ('Tools', 'Illustrator, Photoshop')],
+      hero=None, cover=IG + 'IG_05_Q1_2024.jpg',
+      images=[IG + n + '.jpg' for n in ('IG_05_Q1_2024', 'IG_18_Q2_2024', 'IG_01_Jouf', 'IG_02_Dammam_2nd', 'IG_08_Logistics', 'IG_07_Infrastructure',
+              'IG_17_Jeddah3_Infra', 'IG_13_Jeddah_Oasis', 'IG_14_Jeddah_Partnerships', 'IG_10_Najran_MoU', 'IG_11_Welspun', 'IG_15_Shop_Floor',
+              'IG_19_Saudifood_Contracts', 'IG_09_Banks_Real_Estate', 'IG_16_Mining_Opportunities', 'IG_06_Ambulance', 'IG_12_Emergency_Team',
+              'IG_03_Food_Safety', 'IG_04_Mental_Health', 'IG_20_Ramadan_Volunteering')]),
+])
+# keep projects in field order on the site
+_order = [k for k, _ in CATS]
+PROJECTS.sort(key=lambda p: _order.index(p['cat']))

@@ -33,7 +33,8 @@ to `PROJECTS` in `data.py` and rebuild. The source images live on Ali's Mac in t
   as fallback. Never commit Astoria font files: the designer's licence (Alan Meeks) forbids redistributing them.
 - Home is calm and light (Ali asked for a home that is not loud): a type-only intro (no portrait: Ali asked to remove
   his photo) with two buttons, a "See the work" band, the sketch-to-final process, about and contact. No project grid.
-- The work lives on its own page, `work.html`: the interactive node canvas of selected work first (`NODES` in `gen.py`:
+- The work lives on its own page, `work.html`, grouped by field (`CATS`, `CATDESC`): a field index, one section per field
+  (a field holding one large series, like the infographics, shows the pieces themselves), then the node canvas of selected work (`NODES` in `gen.py`:
   wires draw, signals travel, nodes drag), then all projects with filters, then the behind-the-scenes canvases.
 - Project pages with an entry in `STEPS` show a "Step by step" board: sketch, then generation or 3D, then the final.
   Sketches are crude phone photos of notebook doodles, on purpose.
@@ -42,6 +43,7 @@ to `PROJECTS` in `data.py` and rebuild. The source images live on Ali's Mac in t
 
 ## Content rules
 - Never write "art director" anywhere.
+- Experience is written as a number of years in the text (8 years in 2026, since 2018); no big "since 2018" block.
 - No near-duplicates: when a series repeats one design (voting posters, named cards, the same layout in several sizes),
   show one. Leave out greetings and invitations that carry a person's name (minister, CEO, named employees).
 - Saudi Energy storyboards: say that the scenes were generated with AI on a Magnific Spaces canvas.
