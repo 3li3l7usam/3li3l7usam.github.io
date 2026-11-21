@@ -237,7 +237,7 @@ FEEDBACK = [  # fill these in; the section stays hidden on the live site while a
     dict(quote='', name='', role='', project='Electricity Friend'),
 ]
 
-CONTACT = dict(email='3li.3l7osam@gmail.com', phone='+966 53 607 0382', behance='https://www.behance.net/3li3l7usam', linkedin='')
+CONTACT = dict(email='alialhusam.art@gmail.com', phone='+966 53 607 0382', behance='https://www.behance.net/3li3l7usam', linkedin='')
 
 # ======================================================================== v4: booths, step-by-step boards, sketch-first process
 CATS = [('campaigns', 'Campaigns & events'), ('booths', 'Exhibition booths'), ('presentations', 'Presentations'),
